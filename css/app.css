@@ -3,7 +3,7 @@
 /** Variables **/
 :root {
 /* General Colors */
-  --color-content-background: #fff;
+  --color-content-background: #eee;
   --color-content: #000;
 
   --color-blue: #094dff;
@@ -19,7 +19,7 @@
 /* Specific Colors */
   --color-window-background-h: 0;
   --color-window-background-s: 0%;
-  --color-window-background-l: 95%;
+  --color-window-background-l: 100%;
   --color-window-background-a: 1;
   --color-window-background-hsla: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), var(--color-window-background-a));
   --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.7));
