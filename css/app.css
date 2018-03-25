@@ -34,7 +34,7 @@
   --shadow-factor-base: 4px;
   --shadow-position-base: 0 var(--shadow-factor-base);
   --box-shadow-base: var(--shadow-position-base) var(--shadow-factor-base) calc(var(--shadow-factor-base) * -1) var(--color-content);
-  --border-radius-base: 6px;
+  --border-radius-base: 12px;
 
   /* Transitions */
   --transition-base: all .15s ease;
@@ -86,11 +86,13 @@ body {
     width: calc(18 * var(--spacing-base));
     height: calc(15 * var(--spacing-base));
     transition: var(--transition-base);
-    transition-property: color, background-color, width, height, opacity, backdrop-filter;
+    transition-property: color, background-color, width, height, opacity, backdrop-filter, -webkit-backdrop-filter;
     z-index: var(--z-index-window-base);
     cursor: grab;
     position: absolute;
     line-height: 1.4;
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
 }
 
 .window:hover {
