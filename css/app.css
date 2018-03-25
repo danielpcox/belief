@@ -155,21 +155,5 @@ body {
 
 
 
-/* Connectors */
-    path[stroke-width] {
-        stroke-width: 2 !important;
-    }
-
-    [fill="#316b31"] {
-        fill: var(--color-green) !important;
-    }
-    [stroke="#316b31"] {
-        stroke: var(--color-green) !important;
-    }
-    
+/* Connectors */    
     path, .jtk-endpoint { cursor:pointer; }
-
-    .jtk-connector {
-        
-    }
-    
