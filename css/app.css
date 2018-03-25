@@ -60,6 +60,7 @@ html {
     width: 100vw;
     font-family: var(--font-family-base);
     font-weight: var(--font-weight-base);
+    user-select: none;
 }
 body {
     margin: 0;
