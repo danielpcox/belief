@@ -53,71 +53,73 @@
     }
 }
 
-html {
-    background-color: var(--color-content-background);
-    color: var(--color-content);
-    height: 100vh;
-    width: 100vw;
-    font-family: var(--font-family-base);
-    font-weight: var(--font-weight-base);
-    user-select: none;
-}
-body {
-    margin: 0;
-    padding: 0;
-}
+/* Root & HTML */
 
-.demo {
-    /* for IE10+ touch devices */
-    touch-action:none;
-}
+    html {
+        background-color: var(--color-content-background);
+        color: var(--color-content);
+        height: 100vh;
+        width: 100vw;
+        font-family: var(--font-family-base);
+        font-weight: var(--font-weight-base);
+        user-select: none;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .demo {
+        /* for IE10+ touch devices */
+        touch-action:none;
+    }
 
 /** ELEMENT POSITIONS **/
-#dragDropWindow1 { top:76px;left:100px; }
-#dragDropWindow2 { top:148px; left:600px; }
-#dragDropWindow3 { top:340px; left:100px; }
-#dragDropWindow4 { top:416px; left:600px; }
+    #dragDropWindow1 { top:76px;left:100px; }
+    #dragDropWindow2 { top:148px; left:600px; }
+    #dragDropWindow3 { top:340px; left:100px; }
+    #dragDropWindow4 { top:416px; left:600px; }
 
 /** ELEMENTS **/
-.drag-drop-demo .window {
-    background-color: var(--color-window-background-hsla);
-    box-shadow: var(--box-shadow-base), 0 0 3px -2px var(--color-content);
+    .drag-drop-demo .window {
+        background-color: var(--color-window-background-hsla);
+        box-shadow: var(--box-shadow-base), 0 0 3px -2px var(--color-content);
 
-    box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
-    border-radius: var(--border-radius-base);
-    padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
-    width: calc(18 * var(--spacing-base));
-    height: calc(15 * var(--spacing-base));
-    transition: var(--transition-base);
-    transition-property: color, background-color, width, height, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
-    z-index: var(--z-index-window-base);
-    cursor: grab;
-    position: absolute;
-    line-height: 1.4;
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-}
+        box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
+        border-radius: var(--border-radius-base);
+        padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
+        width: calc(18 * var(--spacing-base));
+        height: calc(15 * var(--spacing-base));
+        transition: var(--transition-base);
+        transition-property: color, background-color, width, height, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
+        z-index: var(--z-index-window-base);
+        cursor: grab;
+        position: absolute;
+        line-height: 1.4;
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+    }
 
-.window:hover {
-    background-color: var(--color-window-background-hsla-hover);
-    box-shadow: 0 12px 12px -12px rgba(0,0,0,.4), 0 0 3px -2px var(--color-content);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    z-index: calc(var(--z-index-window-base) + 10);
-}
+    .window:hover {
+        background-color: var(--color-window-background-hsla-hover);
+        box-shadow: 0 12px 12px -12px rgba(0,0,0,.4), 0 0 3px -2px var(--color-content);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        z-index: calc(var(--z-index-window-base) + 10);
+    }
 
-.window:active {
-    cursor: grabbing;
-}
+    .window:active {
+        cursor: grabbing;
+    }
 
-.drag-drop-demo a,
-.drag-drop-demo a:visited {
-    color:#057D9F;
-}
+    .drag-drop-demo a,
+    .drag-drop-demo a:visited {
+        color:#057D9F;
+    }
 
-.drag-drop-demo a:hover {
-    color:orange;
-}
+    .drag-drop-demo a:hover {
+        color:orange;
+    }
 
 /** LINKS IN WINDOWS **/
 .drag-locked { border:1px solid red; }
