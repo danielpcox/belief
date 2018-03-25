@@ -82,22 +82,25 @@ body {
 .drag-drop-demo .window {
     background-color: var(--color-window-background-hsla);
     box-shadow: var(--box-shadow-base), 0 0 3px -2px var(--color-content);
+
+    box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
     border-radius: var(--border-radius-base);
     padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
     width: calc(18 * var(--spacing-base));
     height: calc(15 * var(--spacing-base));
     transition: var(--transition-base);
-    transition-property: color, background-color, width, height, opacity, backdrop-filter, -webkit-backdrop-filter;
+    transition-property: color, background-color, width, height, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
     z-index: var(--z-index-window-base);
     cursor: grab;
     position: absolute;
     line-height: 1.4;
-    -webkit-backdrop-filter: blur(0px);
-    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
 }
 
 .window:hover {
     background-color: var(--color-window-background-hsla-hover);
+    box-shadow: 0 12px 12px -12px rgba(0,0,0,.4), 0 0 3px -2px var(--color-content);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: calc(var(--z-index-window-base) + 10);
