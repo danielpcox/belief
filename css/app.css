@@ -1,3 +1,71 @@
+
+
+/** Variables **/
+:root {
+/* General Colors */
+  --color-content-background: #fff;
+  --color-content: #000;
+
+  --color-blue: #094dff;
+  --color-red: #eb001a;
+  --color-orange: #f16900;
+  --color-yellow: #f8b400;
+  --color-green: #4fce31;
+  --color-light-blue: #4ab0fc;
+  --color-purple: #302cc9;
+  --color-pink: #eb0035;
+
+
+/* Specific Colors */
+  --color-window-background-h: 0;
+  --color-window-background-s: 0%;
+  --color-window-background-l: 95%;
+  --color-window-background-a: 1;
+  --color-window-background-hsla: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), var(--color-window-background-a));
+  --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.7));
+
+/* Typography * Layout */
+  --font-family-base: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  --font-weight-base: 400;
+  --spacing-base: 8px;
+  --z-index-window-base: 24;
+  
+/* Decorations */
+  --shadow-factor-base: 4px;
+  --shadow-position-base: 0 var(--shadow-factor-base);
+  --box-shadow-base: var(--shadow-position-base) var(--shadow-factor-base) calc(var(--shadow-factor-base) * -1) var(--color-content);
+  --border-radius-base: 6px;
+
+  /* Transitions */
+  --transition-base: all .15s ease;
+
+}
+/* Animations */
+@keyframes scale-pulse {
+    0% {
+        transform-origin: center center;
+        transform: scale(1);
+        opacity: 1;
+    } 100% {
+        transform-origin: center center;
+        transform: scale(1.4);
+        opacity: 0.8;
+    }
+}
+
+html {
+    background-color: var(--color-content-background);
+    color: var(--color-content);
+    height: 100vh;
+    width: 100vw;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-base);
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
 .demo {
     /* for IE10+ touch devices */
     touch-action:none;
@@ -11,42 +79,33 @@
 
 /** ELEMENTS **/
 .drag-drop-demo .window {
-    font-family: serif;
-    font-style: italic;
-    background-color: white;
-    border: 1px solid #346789;
-    text-align: center;
-    z-index: 24;
-    cursor: pointer;
-    box-shadow: 2px 2px 19px #aaa;
-    -o-box-shadow: 2px 2px 19px #aaa;
-    -webkit-box-shadow: 2px 2px 19px #aaa;
-    -moz-box-shadow: 2px 2px 19px #aaa;
-    -moz-border-radius: 0.5em;
-    border-radius: 0.5em;
+    background-color: var(--color-window-background-hsla);
+    box-shadow: var(--box-shadow-base);
+    border-radius: var(--border-radius-base);
+    padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
+    width: calc(18 * var(--spacing-base));
+    height: calc(15 * var(--spacing-base));
+    transition: var(--transition-base);
+    transition-property: color, background-color, width, height, opacity, backdrop-filter;
+    z-index: var(--z-index-window-base);
+    cursor: grab;
     position: absolute;
-    color: black;
-    padding-top: 5px;
-    width: 140px;
-    height: 120px;
-    line-height: 12px;
-    -webkit-transition: -webkit-box-shadow 0.15s ease-in;
-    -moz-transition: -moz-box-shadow 0.15s ease-in;
-    -o-transition: -o-box-shadow 0.15s ease-in;
-    transition: box-shadow 0.15s ease-in;
+    line-height: 1.4;
 }
 
 .window:hover {
-    border:1px solid #123456;
-    box-shadow: 2px 2px 19px #444;
-    -o-box-shadow: 2px 2px 19px #444;
-    -webkit-box-shadow: 2px 2px 19px #444;
-    -moz-box-shadow: 2px 2px 19px #fff;
-    opacity:0.9;
+    background-color: var(--color-window-background-hsla-hover);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    z-index: calc(var(--z-index-window-base) + 10);
 }
 
+.window:active {
+    cursor: grabbing;
+}
 
-.drag-drop-demo a, .drag-drop-demo a:visited {
+.drag-drop-demo a,
+.drag-drop-demo a:visited {
     color:#057D9F;
 }
 
@@ -59,28 +118,52 @@
 .cmdLink { font-size:0.80em;}
 
 /** DRAG/DROP CLASSES **/
-.dragActive { border:2px dotted orange; }
-.dropHover { border:1px dotted red; }
+    .dragActive {
+        animation: scale-pulse alternate-reverse infinite;
+        animation-duration: 1s;
+    }
+    .dropHover {
+        animation: scale-pulse alternate-reverse infinite;
+        animation-duration: 0.2s;
+    }
 
 /** INFO WINDOW **/
-#list {
-    text-align: center;
-    display: none;
-    font-size: 90%;
-    position: absolute;
-    width: 500px;
-    left: 50%;
-    margin-left: -250px;
-    top: 100px;
-    background-color: white;
-    padding: 5px;
-    border: 1px solid #456;
-    opacity: 0.8;
-    border-radius: 8px;
-    color: #444;
-}
-#list table { width:100%;}
-#list table th, #list strong { color:black; font-size:12px; text-align: center; }
+    #list {
+        text-align: center;
+        display: none;
+        font-size: 90%;
+        position: absolute;
+        width: 500px;
+        left: 50%;
+        margin-left: -250px;
+        top: 100px;
+        background-color: white;
+        padding: 5px;
+        border: 1px solid #456;
+        opacity: 0.8;
+        border-radius: 8px;
+        color: #444;
+    }
+    #list table { width:100%;}
+    #list table th, #list strong { color:black; font-size:12px; text-align: center; }
 
-path, .jtk-endpoint { cursor:pointer; }
 
+
+/* Connectors */
+    path[stroke-width] {
+        stroke-width: 2 !important;
+    }
+
+    [fill="#316b31"] {
+        fill: var(--color-green) !important;
+    }
+    [stroke="#316b31"] {
+        stroke: var(--color-green) !important;
+    }
+    
+    path, .jtk-endpoint { cursor:pointer; }
+
+    .jtk-connector {
+        
+    }
+    
