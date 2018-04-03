@@ -51,17 +51,17 @@ jsPlumb.bind("jsPlumbDemoLoaded", function (instance) {
         const colorRed = "rgb(255,59,48)";
         const colorBlue = "rgb(0,122,255)";
         const colorGreen = "rgb(76,217,100)";
-        const defaultConnectionCurviness = 100;
+        const defaultConnectionCurviness = 50;
         const InputColor = colorRed;
         const OutputEndpointColor = colorGreen;
 
         var instance = jsPlumb.getInstance({
             DragOptions: { cursor: 'pointer', zIndex: 2000 },
-            PaintStyle: { stroke: '#666' },
-            EndpointHoverStyle: { fill: "orange" },
-            HoverPaintStyle: { stroke: "orange" },
-            EndpointStyle: { width: 20, height: 16, stroke: '#666' },
-            Endpoint: "Rectangle",
+            PaintStyle: { stroke: colorGreen },
+            EndpointHoverStyle: { fill: colorBlue },
+            HoverPaintStyle: { stroke: colorBlue },
+            EndpointStyle: { width: 16, height: 16, stroke: colorGreen },
+            Endpoint: "Dot",
             Anchors: ["TopCenter", "TopCenter"],
             Container: "canvas"
         });
@@ -99,7 +99,6 @@ jsPlumb.bind("jsPlumbDemoLoaded", function (instance) {
                 endpoint: ["Dot", { radius: 8 }],
                 paintStyle: { fill: colorGreen },
                 isSource: true,
-                reattach: true,
                 isTarget: true,
                 scope: "probabilityConnection",
                 connectorStyle: { stroke: colorGreen, strokeWidth: 2 },
@@ -112,7 +111,6 @@ jsPlumb.bind("jsPlumbDemoLoaded", function (instance) {
                 endpoint: ["Dot", { radius: 8 }],
                 paintStyle: { fill: colorGreen },
                 isSource: true,
-                reattach: true,
                 isTarget: true,
                 scope: "probabilityConnection",
                 connectorStyle: { stroke: colorGreen, strokeWidth: 2 },

@@ -22,7 +22,7 @@
   --color-window-background-l: 100%;
   --color-window-background-a: 1;
   --color-window-background-hsla: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), var(--color-window-background-a));
-  --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.7));
+  --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.6));
 
 /* Typography * Layout */
   --font-family-base: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
@@ -37,7 +37,8 @@
   --border-radius-base: 8px;
 
   /* Transitions */
-  --transition-base: all .15s ease;
+  --transition-base-duration-and-timing: .15s ease;
+  --transition-base: all var(--transition-base-duration-and-timing);
 
 }
 /* Animations */
@@ -63,10 +64,21 @@
         font-family: var(--font-family-base);
         font-weight: var(--font-weight-base);
         user-select: none;
+        background-image: url("data:image/svg+xml;utf-8,\
+            <svg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'>\
+                <circle cx='8' cy='8' r='1.25' fill='rgba(255,255,255,0.5)' />\
+            </svg>");
+        background-repeat: repeat;
+        background-position: calc(var(--spacing-base) * 0.5) calc(var(--spacing-base) * 0.5);
+        background-size: auto auto;
     }
     body {
         margin: 0;
         padding: 0;
+    }
+
+    * {
+        user-select: none;
     }
 
     .demo {
@@ -75,23 +87,21 @@
     }
 
 /** ELEMENT POSITIONS **/
-    #dragDropWindow1 { top:76px;left:100px; }
-    #dragDropWindow2 { top:148px; left:600px; }
-    #dragDropWindow3 { top:340px; left:100px; }
-    #dragDropWindow4 { top:416px; left:600px; }
+    #dragDropWindow1 { top: calc((var(--spacing-base)) * 10); left: calc((var(--spacing-base)) * 12); }
+    #dragDropWindow2 { top: calc((var(--spacing-base)) * 15); left: calc((var(--spacing-base)) * 50); }
+    #dragDropWindow3 { top: calc((var(--spacing-base)) * 40); left: calc((var(--spacing-base)) * 12); }
+    #dragDropWindow4 { top: calc((var(--spacing-base)) * 45); left: calc((var(--spacing-base)) * 50); }
 
-/** ELEMENTS **/
-    .drag-drop-demo .window {
+/** Propositions **/
+    .window {
         background-color: var(--color-window-background-hsla);
-        box-shadow: var(--box-shadow-base), 0 0 3px -2px var(--color-content);
-
         box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
         border-radius: var(--border-radius-base);
         padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
         width: calc(18 * var(--spacing-base));
-        height: calc(15 * var(--spacing-base));
+        min-height: calc(15 * var(--spacing-base));
         transition: var(--transition-base);
-        transition-property: color, background-color, width, height, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
+        transition-property: color, background-color, width, height, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter, transform;
         z-index: var(--z-index-window-base);
         cursor: grab;
         position: absolute;
@@ -99,69 +109,17 @@
         -webkit-backdrop-filter: blur(5px);
         backdrop-filter: blur(5px);
     }
-
     .window:hover {
         background-color: var(--color-window-background-hsla-hover);
-        box-shadow: 0 12px 12px -12px rgba(0,0,0,.4), 0 0 3px -2px var(--color-content);
+        box-shadow: 0 8px 8px -8px rgba(0,0,0,.2), 0 0 3px -2px var(--color-content);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         z-index: calc(var(--z-index-window-base) + 10);
+        transform: scale(1.01);
     }
-
     .window:active {
         cursor: grabbing;
     }
-
-    .drag-drop-demo a,
-    .drag-drop-demo a:visited {
-        color:#057D9F;
-    }
-
-    .drag-drop-demo a:hover {
-        color:orange;
-    }
-
-/** LINKS IN WINDOWS **/
-.drag-locked { border:1px solid red; }
-.cmdLink { font-size:0.80em;}
-
-/** DRAG/DROP CLASSES **/
-    .dragActive {
-        animation: scale-pulse alternate-reverse infinite;
-        animation-duration: 1s;
-    }
-    .dropHover {
-        animation: scale-pulse alternate-reverse infinite;
-        animation-duration: 0.2s;
-    }
-
-/** INFO WINDOW **/
-    #list {
-        text-align: center;
-        display: none;
-        font-size: 90%;
-        position: absolute;
-        width: 500px;
-        left: 50%;
-        margin-left: -250px;
-        top: 100px;
-        background-color: white;
-        padding: 5px;
-        border: 1px solid #456;
-        opacity: 0.8;
-        border-radius: 8px;
-        color: #444;
-    }
-    #list table { width:100%;}
-    #list table th, #list strong { color:black; font-size:12px; text-align: center; }
-
-
-
-/* Connectors */    
-    path, .jtk-endpoint { cursor:pointer; }
-
-
-/* Semantic styling */
 
     .proposition {
         font-weight: bold;
@@ -174,4 +132,30 @@
         font-size: 0.7em;
         opacity: 0.7;
         margin: 0;
+    }
+
+    .oods-probability {
+        font-weight: normal;
+        font-size: 0.7em;
+        opacity: 0.7;
+        margin: 0;
+    }
+
+
+/* Connectors */    
+    path, g, rectangle, circle {
+        cursor: pointer;
+        transition: fill var(--transition-base-duration-and-timing), stroke var(--transition-base-duration-and-timing);
+    }
+
+
+    .jtk-endpoint { }
+
+    .jtk-endpoint.jtk-hover {
+        animation: scale-pulse alternate infinite;
+        animation-duration: 0.5s;
+    }
+    .jtk-endpoint.dragActive {
+        animation: scale-pulse alternate infinite;
+        animation-duration: 1.2s;
     }
