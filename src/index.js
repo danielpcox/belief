@@ -1,5 +1,44 @@
 import { jsPlumb } from 'jsplumb'
 
+const propositions = [
+    {
+        "_id": "5ac403178505b096fed5dca7",
+        "index": 0,
+        "description": "She weighs as much as a duck",
+        "priorN": 1,
+        "priorD": 5000,
+        "probabilityN": 1,
+        "ProbabilityD": 5000
+    },
+    {
+        "_id": "5ac403172dcb8ad404b3e718",
+        "index": 1,
+        "description": "She is a witch",
+        "priorN": 1,
+        "priorD": 2,
+        "probabilityN": 1,
+        "ProbabilityD": 5000
+    },
+    {
+        "_id": "5ac4031718a683419ef04f34",
+        "index": 2,
+        "description": "We can burn witches",
+        "priorN": 1,
+        "priorD": 1,
+        "probabilityN": 1,
+        "ProbabilityD": 5000
+    },
+    {
+        "_id": "5ac40317b41ec65a2c8bba0a",
+        "index": 3,
+        "description": "Text Description",
+        "priorN": 0,
+        "priorD": 1,
+        "probabilityN": 1,
+        "ProbabilityD": 5000
+    }
+];
+
 jsPlumb.bind("jsPlumbDemoLoaded", function (instance) {
 
     var renderer = jsPlumbToolkit.Support.ingest({
@@ -122,18 +161,13 @@ jsPlumb.bind("jsPlumbDemoLoaded", function (instance) {
             // make .window divs draggable
             instance.draggable(jsPlumb.getSelector(".drag-drop-demo .window"));
 
-            // add endpoint of type 3 using a selector.
+            // add input and output endpoints.
             instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "LeftMiddle" }, InputEndpoint);
             instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "RightMiddle" }, OutputEndpoint);
-
-            instance.on(document.getElementById("clear"), "click", function (e) {
-                instance.detachEveryConnection();
-                showConnectionInfo("");
-                jsPlumbUtil.consume(e);
-            });
         });
 
         jsPlumb.fire("jsPlumbDemoLoaded", instance);
 
     });
 })();
+

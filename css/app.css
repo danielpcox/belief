@@ -63,7 +63,6 @@
         width: 100vw;
         font-family: var(--font-family-base);
         font-weight: var(--font-weight-base);
-        user-select: none;
         background-image: url("data:image/svg+xml;utf-8,\
             <svg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'>\
                 <circle cx='8' cy='8' r='1.25' fill='rgba(255,255,255,0.5)' />\
@@ -77,16 +76,33 @@
         padding: 0;
     }
 
-    * {
+    /* Reset interaction styles because this is an app */
+    html {
+        -webkit-user-select: none;
+        -moz-user-select: none;
         user-select: none;
+    }
+    html:active {
+        cursor: default;
+    }
+    *,
+    *:after,
+    *:before {
+        user-select: none;
+        cursor: default;
+    }
+    *::selection {
+        background: transparent;
     }
 
     .demo {
         /* for IE10+ touch devices */
         touch-action:none;
+        counter-reset: windows;
     }
 
-/** ELEMENT POSITIONS **/
+/** ELEMENT INITIAL POSITIONS **/
+
     #dragDropWindow1 { top: calc((var(--spacing-base)) * 10); left: calc((var(--spacing-base)) * 12); }
     #dragDropWindow2 { top: calc((var(--spacing-base)) * 15); left: calc((var(--spacing-base)) * 50); }
     #dragDropWindow3 { top: calc((var(--spacing-base)) * 40); left: calc((var(--spacing-base)) * 12); }
@@ -101,13 +117,15 @@
         width: calc(18 * var(--spacing-base));
         min-height: calc(15 * var(--spacing-base));
         transition: var(--transition-base);
-        transition-property: color, background-color, width, height, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter, transform;
+        transition-property: color, background-color, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
         z-index: var(--z-index-window-base);
         cursor: grab;
         position: absolute;
         line-height: 1.4;
         -webkit-backdrop-filter: blur(5px);
         backdrop-filter: blur(5px);
+        display: flex;
+        flex-direction: column;
     }
     .window:hover {
         background-color: var(--color-window-background-hsla-hover);
@@ -120,25 +138,61 @@
     .window:active {
         cursor: grabbing;
     }
+    /* Spacing element */
+    .window:after {
+        --page-margin: calc(var(--spacing-base) * -5);
+        content: '';
+        position: absolute;
+        pointer-events: none;
+        top: var(--page-margin);
+        bottom: var(--page-margin);
+        left: var(--page-margin);
+        right: var(--page-margin);
+    }
 
     .proposition {
         font-weight: bold;
         line-height: 1.2;
+        font-size: 1em;
+        margin:  calc(var(--spacing-base) * -0.5) calc(var(--spacing-base) * -0.5) auto;
+        padding: calc(var(--spacing-base) * 0.5);
+        border: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        height: auto;
+        height: fit-content;
+        resize: none;
+    }
+
+    .prior,
+    .odds-probability {
+        opacity: 0.7;
+        font-size: 0.7em;
         margin: 0;
+        letter-spacing: .03em;
+        display: flex;
+    }
+
+
+    .label {
+        flex: 0 0 5em;
+    }
+    .ratio {
+        word-spacing: 0;
+        white-space: nowrap;
+    }
+    .ratio .n {}
+    .ratio .d {}
+    .ratio .d:before {
+        content: ':'
     }
 
     .prior {
-        font-weight: normal;
-        font-size: 0.7em;
-        opacity: 0.7;
-        margin: 0;
     }
 
-    .oods-probability {
-        font-weight: normal;
-        font-size: 0.7em;
-        opacity: 0.7;
-        margin: 0;
+    .odds-probability {
     }
 
 
