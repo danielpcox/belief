@@ -159,3 +159,19 @@
 
 /* Connectors */    
     path, .jtk-endpoint { cursor:pointer; }
+
+
+/* Semantic styling */
+
+    .proposition {
+        font-weight: bold;
+        line-height: 1.2;
+        margin: 0;
+    }
+
+    .prior {
+        font-weight: normal;
+        font-size: 0.7em;
+        opacity: 0.7;
+        margin: 0;
+    }
