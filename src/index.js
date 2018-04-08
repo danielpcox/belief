@@ -1,5 +1,5 @@
-import { jsPlumb } from 'jsplumb'
-
+import { jsPlumb } from 'jsplumb';
+import $ from 'jquery';
 
 // Configuration
 //
@@ -62,13 +62,8 @@ const updateConnections = function (conn, isRemoval) {
 
 
 // Run jsPlumb
-//
-
-jsPlumb.ready(function () {
-
-  // instantiate jsPlumb instance
-  var instance = jsPlumb.getInstance(instanceOptions);
-
+// TODO: This might be adding all new endpoints with every call. Is addEndpoint idempotent?
+const rePlumb = (instance) => {
   instance.batch(function () {
 
     // event bindings
@@ -83,7 +78,7 @@ jsPlumb.ready(function () {
     });
 
     instance.bind("click", function (component, originalEvent) {
-      alert("click!")
+      console.log("Connection clicked.");
     });
 
     // make .window divs draggable
@@ -93,7 +88,51 @@ jsPlumb.ready(function () {
     instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "LeftMiddle" }, InputEndpoint);
     instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "RightMiddle" }, OutputEndpoint);
   });
+}
+let instance;
+jsPlumb.ready(function () {
 
+  // instantiate jsPlumb instance
+  instance = jsPlumb.getInstance(instanceOptions);
+
+  rePlumb(instance);
 
 });
+
+
+// New Proposition Card Creation
+//
+
+$(document).ready(function() {
+  $("#canvas").dblclick(function (e) {
+    console.log("canvas clicked! ", e.pageX, e.pageY);
+    let newCard = `
+    <div class="window" style="top:${e.pageY}px; left:${e.pageX}px">
+      <textarea class="proposition">Proposition</textarea>
+      <p class="prior">
+        <span class="label">Prior</span>
+        <span class="ratio">
+          <span class="n">1</span>
+          <span class="d">1</span>
+      </p>
+      <p class="odds-probability">
+        <span class="label">Odds</span>
+        <span class="ratio">
+          <span class="n">1</span>
+          <span class="d">1</span>
+      </p>
+    </div>
+    `
+    $("#canvas").append(newCard);
+    // reapply stopPropagation (TODO: make efficient)
+    $("#canvas *").click(function(e) {
+      e.stopPropagation();
+    });
+    rePlumb(instance);
+  });
+
+  $("#canvas *").click(function(e) {
+    e.stopPropagation();
+  });
+})
 

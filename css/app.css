@@ -70,6 +70,7 @@
         background-repeat: repeat;
         background-position: calc(var(--spacing-base) * 0.5) calc(var(--spacing-base) * 0.5);
         background-size: auto auto;
+        position: relative;
     }
     body {
         margin: 0;
@@ -109,6 +110,13 @@
     #dragDropWindow4 { top: calc((var(--spacing-base)) * 45); left: calc((var(--spacing-base)) * 50); }
 
 /** Propositions **/
+    #canvas {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
     .window {
         background-color: var(--color-window-background-hsla);
         box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
@@ -213,3 +221,4 @@
         animation: scale-pulse alternate infinite;
         animation-duration: 1.2s;
     }
+
