@@ -64,24 +64,27 @@ const updateProposition = (id, newProp) => {
 
 // Update Connections (callback)
 //
-const updateProb= function (conn, isRemoval) {
+const updateProb = function (conn, isRemoval) {
   if (!conn.getOverlay("label")) {
     let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
     conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
     stopDoubleclickPropagation();
 
     // calculate new odds and apply
-    let sourceProb = propositions[conn.source.id].prob
-    let oldTargetProb = propositions[conn.target.id].prob
+    let sourceProb = propositions[conn.source.id].prob / 100
+    let oldTargetProb = propositions[conn.target.id].prob / 100
     let oldTargetOdds = oldTargetProb / (1 - oldTargetProb)
     let oldTargetPrior = propositions[conn.target.id].prior
     let lrProbProj = likelihoodRatio / (likelihoodRatio + 1)
     let combinedProb = (sourceProb * lrProbProj) + ( (1-sourceProb)*(1-lrProbProj) )
+    console.log("combinedProb", combinedProb);
     let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
+    console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
     let finalOdds = oldTargetOdds*combinedLikelihoodRatio
     let finalProb = finalOdds / (finalOdds + 1)
+    console.log("finalProb", finalProb);
 
-    updateProposition(conn.target.id,{prob:finalProb, prior:oldTargetPrior});
+    updateProposition(conn.target.id,{prob:finalProb * 100, prior:oldTargetPrior});
   }
 };
 
