@@ -65,16 +65,23 @@ const updateProposition = (id, newProp) => {
 // Update Connections (callback)
 //
 const updateOdds = function (conn, isRemoval) {
-  console.log(conn)
   if (!conn.getOverlay("label")) {
-    let likelihoodRatio = parseInt(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
+    let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
     conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
     stopDoubleclickPropagation();
 
     // calculate new odds and apply
     let sourceOdds = propositions[conn.source.id].odds
-    let oldTargetProp = propositions[conn.target.id]
-    updateProposition(conn.target.id, { odds: oldTargetProp.odds * sourceOdds * likelihoodRatio, prior: oldTargetProp.prior });
+    let oldTargetPropOdds = propositions[conn.target.id].odds
+    let oldTargetPropPrior = propositions[conn.target.id].prior
+    let sourceProb = sourceOdds / (sourceOdds + 1);
+    let lrProbProj = likelihoodRatio / (likelihoodRatio + 1)
+    let combinedProb = (sourceProb * lrProbProj) + ( (1-sourceProb)*(1-lrProbProj) )
+    console.log("combinedProb", combinedProb);
+    let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
+    console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
+
+    updateProposition(conn.target.id,{odds:oldTargetPropOdds*combinedLikelihoodRatio, prior:oldTargetPropPrior});
   }
 };
 
@@ -131,7 +138,7 @@ const stopDoubleclickPropagation = (id) => {
 $(document).ready(function () {
   $("#canvas").dblclick(function (e) {
     let id = uuid();
-    let prior = parseInt(prompt("Prior odds for new proposition?", "1"));
+    let prior = parseFloat(prompt("Prior odds for new proposition?", "1"));
     let newCard = `
     <div class="window" id="${id}" style="top:${e.pageY}px; left:${e.pageX}px">
       <textarea class="proposition">Proposition</textarea>
