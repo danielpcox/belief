@@ -3,7 +3,6 @@ import $ from 'jquery';
 
 // Configuration
 //
-
 const colorRed = "rgb(255,59,48)";
 const colorBlue = "rgb(0,122,255)";
 const colorGreen = "rgb(76,217,100)";
@@ -55,9 +54,9 @@ const OutputEndpoint = {
 
 // Update Connections callback
 //
-
 const updateConnections = function (conn, isRemoval) {
   console.log("[DEBUG] ", "New connection info: ", isRemoval?"(removal)":"", conn);
+  conn.addOverlay(["Label", {label: prompt("Likelihood ratio?", "1:1"), id:"label"}]);
 };
 
 
@@ -102,7 +101,6 @@ jsPlumb.ready(function () {
 
 // New Proposition Card Creation
 //
-
 $(document).ready(function() {
   $("#canvas").dblclick(function (e) {
     console.log("canvas clicked! ", e.pageX, e.pageY);
