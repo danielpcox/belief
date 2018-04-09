@@ -52,15 +52,21 @@ const OutputEndpoint = {
 };
 
 
-// Update Connections callback
+
+// Update Connections (callback)
 //
 const updateConnections = function (conn, isRemoval) {
   console.log("[DEBUG] ", "New connection info: ", isRemoval?"(removal)":"", conn);
-  conn.addOverlay(["Label", {label: prompt("Likelihood ratio?", "1:1"), id:"label"}]);
+  if (!conn.getOverlay("label")) {
+    conn.addOverlay(["Label", {label: prompt("Likelihood ratio?", "1:1"), id:"label"}]);
+    stopDoubleclickPropagation();
+  }
 };
 
 
-// Run jsPlumb
+
+
+// Extracted function for reapplying jsPlumb
 // TODO: This might be adding all new endpoints with every call. Is addEndpoint idempotent?
 const rePlumb = (instance) => {
   instance.batch(function () {
@@ -88,22 +94,29 @@ const rePlumb = (instance) => {
     instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "RightMiddle" }, OutputEndpoint);
   });
 }
+
+
+
+// Actually run jsPlumb
 let instance;
 jsPlumb.ready(function () {
-
-  // instantiate jsPlumb instance
   instance = jsPlumb.getInstance(instanceOptions);
-
   rePlumb(instance);
-
 });
+
+
 
 
 // New Proposition Card Creation
 //
+const stopDoubleclickPropagation = () => {
+  $("#canvas *").dblclick(function(e) {
+    e.stopPropagation();
+  });
+}
+
 $(document).ready(function() {
   $("#canvas").dblclick(function (e) {
-    console.log("canvas clicked! ", e.pageX, e.pageY);
     let newCard = `
     <div class="window" style="top:${e.pageY}px; left:${e.pageX}px">
       <textarea class="proposition">Proposition</textarea>
@@ -122,15 +135,11 @@ $(document).ready(function() {
     </div>
     `
     $("#canvas").append(newCard);
-    // reapply stopPropagation (TODO: make efficient)
-    $("#canvas *").dblclick(function(e) {
-      e.stopPropagation();
-    });
+    // reapply stopPropagation (TODO: make more efficient, since we only add one known thing)
+    stopDoubleclickPropagation();
     rePlumb(instance);
   });
 
-  $("#canvas *").dblclick(function(e) {
-    e.stopPropagation();
-  });
+  stopDoubleclickPropagation();
 })
 
