@@ -1,5 +1,5 @@
-`npm install`
+1. `npm install`
 
-`npm run dev`
+2. `npm run watch`
 
-`open index.html`
+3. open `index.html` in your browser.
