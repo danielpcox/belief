@@ -218,9 +218,6 @@
         transition: fill var(--transition-base-duration-and-timing), stroke var(--transition-base-duration-and-timing);
     }
 
-
-    .jtk-endpoint { }
-
     .jtk-endpoint.jtk-hover {
         animation: scale-pulse alternate infinite;
         animation-duration: 0.5s;
@@ -230,3 +227,8 @@
         animation-duration: 1.2s;
     }
 
+    .jtk-overlay {
+        background-color: var(--color-content-background);
+        border-radius: 100px;
+        padding: 2px 4px;
+    }
