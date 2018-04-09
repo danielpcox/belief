@@ -53,35 +53,35 @@ const OutputEndpoint = {
 };
 
 // Propositions datastructure
-let propositions = {} // e.g., { '5cd58f3c-82db-481f-8395-11950a92e5d5': {odds:1,prior:1} }
+let propositions = {} // e.g., { '5cd58f3c-82db-481f-8395-11950a92e5d5': {prob:1,prior:1} }
 const updateProposition = (id, newProp) => {
   propositions[id] = newProp;
-  $("#" + id + " .prior .ratio .n").text(newProp.prior);
-  $("#" + id + " .odds .ratio .n").text(newProp.odds);
+  $("#" + id + " .prior .value").text(newProp.prior.toString()+"%");
+  $("#" + id + " .probability .value").text(newProp.prob.toString()+"%");
 }
 
 
 
 // Update Connections (callback)
 //
-const updateOdds = function (conn, isRemoval) {
+const updateProb= function (conn, isRemoval) {
   if (!conn.getOverlay("label")) {
     let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
     conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
     stopDoubleclickPropagation();
 
     // calculate new odds and apply
-    let sourceOdds = propositions[conn.source.id].odds
-    let oldTargetPropOdds = propositions[conn.target.id].odds
-    let oldTargetPropPrior = propositions[conn.target.id].prior
-    let sourceProb = sourceOdds / (sourceOdds + 1);
+    let sourceProb = propositions[conn.source.id].prob
+    let oldTargetProb = propositions[conn.target.id].prob
+    let oldTargetOdds = oldTargetProb / (1 - oldTargetProb)
+    let oldTargetPrior = propositions[conn.target.id].prior
     let lrProbProj = likelihoodRatio / (likelihoodRatio + 1)
     let combinedProb = (sourceProb * lrProbProj) + ( (1-sourceProb)*(1-lrProbProj) )
-    console.log("combinedProb", combinedProb);
     let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
-    console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
+    let finalOdds = oldTargetOdds*combinedLikelihoodRatio
+    let finalProb = finalOdds / (finalOdds + 1)
 
-    updateProposition(conn.target.id,{odds:oldTargetPropOdds*combinedLikelihoodRatio, prior:oldTargetPropPrior});
+    updateProposition(conn.target.id,{prob:finalProb, prior:oldTargetPrior});
   }
 };
 
@@ -96,10 +96,10 @@ const rePlumb = (instance) => {
 
     // event bindings
     instance.bind("connection", function (info, originalEvent) {
-      updateOdds(info.connection);
+      updateProb(info.connection);
     });
     instance.bind("connectionDetached", function (info, originalEvent) {
-      updateOdds(info.connection, true);
+      updateProb(info.connection, true);
     });
 
     instance.bind("click", function (component, originalEvent) {
@@ -138,28 +138,22 @@ const stopDoubleclickPropagation = (id) => {
 $(document).ready(function () {
   $("#canvas").dblclick(function (e) {
     let id = uuid();
-    let prior = parseFloat(prompt("Prior odds for new proposition?", "1"));
+    let prior = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
     let newCard = `
     <div class="window" id="${id}" style="top:${e.pageY}px; left:${e.pageX}px">
       <textarea class="proposition">Proposition</textarea>
       <p class="prior">
         <span class="label">Prior</span>
-        <span class="ratio">
-          <span class="n">${prior}</span>
-          <span class="d">1</span>
+        <span class="value">${prior}%</span>
       </p>
-      <p class="odds">
-        <span class="label">Odds</span>
-        <span class="ratio">
-          <span class="n">${prior}</span>
-          <span class="d">1</span>
+      <p class="probability">
+        <span class="label">Probability</span>
+        <span class="value">${prior}%</span>
       </p>
     </div>
     `
     $("#canvas").append(newCard);
-    //propositions[id] = {odds:prior, prior:prior}
-    //console.log(propositions);
-    updateProposition(id, { odds: prior, prior: prior });
+    updateProposition(id, { prob: prior, prior: prior });
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
     rePlumb(instance);

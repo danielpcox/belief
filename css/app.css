@@ -179,7 +179,7 @@
     }
 
     .prior,
-    .odds {
+    .probability {
         opacity: 0.7;
         font-size: 0.7em;
         margin: 0;
@@ -204,7 +204,7 @@
     .prior {
     }
 
-    .odds {
+    .probability {
       font-weight:bold;
     }
 
