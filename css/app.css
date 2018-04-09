@@ -93,13 +93,20 @@
         cursor: default;
     }
     *::selection {
-        background: transparent;
     }
 
     .demo {
         /* for IE10+ touch devices */
         touch-action:none;
         counter-reset: windows;
+    }
+    textarea,
+    input {
+        -webkit-user-select: auto;
+        -moz-user-select: auto;
+        -ms-user-select: auto;
+        user-select: auto;
+        cursor: text;
     }
 
 /** ELEMENT INITIAL POSITIONS **/
