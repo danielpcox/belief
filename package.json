@@ -15,6 +15,7 @@
   "devDependencies": {
     "jquery": "^3.3.1",
     "jsplumb": "^2.6.9",
+    "uuid": "^3.2.1",
     "webpack": "^4.2.0",
     "webpack-cli": "^2.0.13"
   },
