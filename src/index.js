@@ -123,13 +123,13 @@ $(document).ready(function() {
     `
     $("#canvas").append(newCard);
     // reapply stopPropagation (TODO: make efficient)
-    $("#canvas *").click(function(e) {
+    $("#canvas *").dblclick(function(e) {
       e.stopPropagation();
     });
     rePlumb(instance);
   });
 
-  $("#canvas *").click(function(e) {
+  $("#canvas *").dblclick(function(e) {
     e.stopPropagation();
   });
 })
