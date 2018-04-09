@@ -54,10 +54,10 @@ const OutputEndpoint = {
 
 // Propositions datastructure
 let propositions = {} // e.g., { '5cd58f3c-82db-481f-8395-11950a92e5d5': {odds:1,prior:1} }
-const updateProposition = (id,newProp) => {
+const updateProposition = (id, newProp) => {
   propositions[id] = newProp;
-  $("#"+id+" .prior .ratio .n").text(newProp.prior);
-  $("#"+id+" .odds .ratio .n").text(newProp.odds);
+  $("#" + id + " .prior .ratio .n").text(newProp.prior);
+  $("#" + id + " .odds .ratio .n").text(newProp.odds);
 }
 
 
@@ -68,13 +68,13 @@ const updateOdds = function (conn, isRemoval) {
   console.log(conn)
   if (!conn.getOverlay("label")) {
     let likelihoodRatio = parseInt(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
-    conn.addOverlay(["Label", {label: likelihoodRatio.toString(), id:"label"}]);
+    conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
     stopDoubleclickPropagation();
 
     // calculate new odds and apply
     let sourceOdds = propositions[conn.source.id].odds
     let oldTargetProp = propositions[conn.target.id]
-    updateProposition(conn.target.id,{odds:oldTargetProp.odds*sourceOdds*likelihoodRatio, prior:oldTargetProp.prior});
+    updateProposition(conn.target.id, { odds: oldTargetProp.odds * sourceOdds * likelihoodRatio, prior: oldTargetProp.prior });
   }
 };
 
@@ -100,11 +100,11 @@ const rePlumb = (instance) => {
     });
 
     // make .window divs draggable
-    instance.draggable(jsPlumb.getSelector(".drag-drop-demo .window"));
+    instance.draggable(jsPlumb.getSelector(".drag-drop .window"));
 
     // add input and output endpoints.
-    instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "LeftMiddle" }, InputEndpoint);
-    instance.addEndpoint(jsPlumb.getSelector(".drag-drop-demo .window"), { anchor: "RightMiddle" }, OutputEndpoint);
+    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "LeftMiddle" }, InputEndpoint);
+    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "RightMiddle" }, OutputEndpoint);
   });
 }
 
@@ -123,12 +123,12 @@ jsPlumb.ready(function () {
 // New Proposition Card Creation
 //
 const stopDoubleclickPropagation = (id) => {
-  $(id?`#canvas ${id}`:"#canvas *").dblclick(function(e) {
+  $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
     e.stopPropagation();
   });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   $("#canvas").dblclick(function (e) {
     let id = uuid();
     let prior = parseInt(prompt("Prior odds for new proposition?", "1"));
@@ -152,7 +152,7 @@ $(document).ready(function() {
     $("#canvas").append(newCard);
     //propositions[id] = {odds:prior, prior:prior}
     //console.log(propositions);
-    updateProposition(id,{odds:prior, prior:prior});
+    updateProposition(id, { odds: prior, prior: prior });
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
     rePlumb(instance);
