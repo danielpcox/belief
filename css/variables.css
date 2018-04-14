@@ -1,0 +1,41 @@
+/** Variables **/
+:root {
+/* General Colors */
+  --color-content-background: #eee;
+  --color-content: #000;
+
+  --color-blue: #094dff;
+  --color-red: #eb001a;
+  --color-orange: #f16900;
+  --color-yellow: #f8b400;
+  --color-green: #4fce31;
+  --color-light-blue: #4ab0fc;
+  --color-purple: #302cc9;
+  --color-pink: #eb0035;
+
+
+/* Specific Colors */
+  --color-window-background-h: 0;
+  --color-window-background-s: 0%;
+  --color-window-background-l: 100%;
+  --color-window-background-a: 1;
+  --color-window-background-hsla: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), var(--color-window-background-a));
+  --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.6));
+
+/* Typography * Layout */
+  --font-family-base: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  --font-weight-base: 400;
+  --spacing-base: 8px;
+  --z-index-window-base: 24;
+  
+/* Decorations */
+  --shadow-blur: 6px;
+  --shadow-position-base: 0 var(--shadow-blur);
+  --box-shadow-base: var(--shadow-position-base) var(--shadow-blur) calc(var(--shadow-blur) * -1) var(--color-content);
+  --border-radius-base: 8px;
+
+  /* Transitions */
+  --transition-base-duration-and-timing: .15s ease;
+  --transition-base: all var(--transition-base-duration-and-timing);
+
+}

@@ -1,0 +1,12 @@
+/* Animations */
+@keyframes scale-pulse {
+  0% {
+    transform-origin: center center;
+    transform: scale(1);
+    opacity: 1;
+} 100% {
+    transform-origin: center center;
+    transform: scale(1.4);
+    opacity: 0.8;
+  }
+}

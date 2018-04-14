@@ -1,0 +1,137 @@
+/* Propositions */
+
+.window {
+  background-color: var(--color-window-background-hsla);
+  box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
+  width: calc(18 * var(--spacing-base));
+  min-height: calc(15 * var(--spacing-base));
+  transition: var(--transition-base);
+  transition-property: color, background-color, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
+  z-index: var(--z-index-window-base);
+  position: absolute;
+  line-height: 1.4;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+}
+.window:hover {
+  z-index: calc(var(--z-index-window-base) + 10);
+}
+
+/* Scrolling area spacing element */
+.window:after {
+  --window-scrolling-spacing-size: calc(var(--spacing-base) * -5);
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  top: var(--window-scrolling-spacing-size);
+  bottom: var(--window-scrolling-spacing-size);
+  left: var(--window-scrolling-spacing-size);
+  right: var(--window-scrolling-spacing-size);
+  z-index: -20;
+}
+/* Hover area spacing element */
+.window:before {
+  --window-hover-spacing-size: calc(var(--spacing-base) * -3);
+  content: '';
+  position: absolute;
+  top: var(--window-hover-spacing-size);
+  bottom: var(--window-hover-spacing-size);
+  left: 0;
+  right: 0;
+  z-index: -10;
+  border-radius: 20px;
+}
+
+.text {
+  margin: 0 0 auto;
+}
+
+.proposition {
+  font-weight: bold;
+  line-height: 1.2;
+  font-size: 1em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  user-select: auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: auto;
+  cursor: text;
+  resize: none;
+}
+
+.prior,
+.probability {
+  opacity: 0.7;
+  font-size: 0.7em;
+  margin: 0;
+  letter-spacing: .03em;
+  display: flex;
+}
+
+
+.label {
+  flex: 0 0 5em;
+}
+.ratio {
+  word-spacing: 0;
+  white-space: nowrap;
+}
+.ratio .n {}
+.ratio .d {}
+.ratio .d:before {
+  content: ':'
+}
+
+.prior {
+}
+
+.probability {
+  font-weight:bold;
+}
+
+
+/* Drag Handle */
+.window .dragHandle { 
+  position: absolute;
+  top: calc(var(--spacing-base) * -1.5);
+  width: 20%;
+  border-radius: 100px;
+  background-color: rgba(0,0,0,.2);
+  height: calc(var(--spacing-base) * .5);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: grab;
+  pointer-events: auto;
+  opacity: 0;
+  transition: var(--transition-base);
+  -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
+}
+
+.window:hover .dragHandle {
+  opacity: 1;
+}
+.window:hover .dragHandle:after {
+  position: absolute;
+  top: calc(var(--spacing-base) * -4);
+  right: calc(var(--spacing-base) * -3);
+  left: calc(var(--spacing-base) * -3);
+  bottom: calc(var(--spacing-base) * -1);
+  content: '';
+}
+.draggable .dragHandle {
+  cursor: grab;
+}
+
+.jtk-dragged .dragHandle,
+.jtk-draggable .dragHandle:active {
+  cursor: grabbing;
+  background-color: rgba(0,0,0,.5);
+}

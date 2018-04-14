@@ -56,8 +56,8 @@ const OutputEndpoint = {
 let propositions = {} // e.g., { '5cd58f3c-82db-481f-8395-11950a92e5d5': {prob:1,prior:1} }
 const updateProposition = (id, newProp) => {
   propositions[id] = newProp;
-  $("#" + id + " .prior .value").text(newProp.prior.toString()+"%");
-  $("#" + id + " .probability .value").text(newProp.prob.toString()+"%");
+  $("#" + id + " .prior .value").text(newProp.prior.toString() + "%");
+  $("#" + id + " .probability .value").text(newProp.prob.toString() + "%");
 }
 
 
@@ -76,15 +76,15 @@ const updateProb = function (conn, isRemoval) {
     let oldTargetOdds = oldTargetProb / (1 - oldTargetProb)
     let oldTargetPrior = propositions[conn.target.id].prior
     let lrProbProj = likelihoodRatio / (likelihoodRatio + 1)
-    let combinedProb = (sourceProb * lrProbProj) + ( (1-sourceProb)*(1-lrProbProj) )
+    let combinedProb = (sourceProb * lrProbProj) + ((1 - sourceProb) * (1 - lrProbProj))
     console.log("combinedProb", combinedProb);
     let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
     console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
-    let finalOdds = oldTargetOdds*combinedLikelihoodRatio
+    let finalOdds = oldTargetOdds * combinedLikelihoodRatio
     let finalProb = finalOdds / (finalOdds + 1)
     console.log("finalProb", finalProb);
 
-    updateProposition(conn.target.id,{prob:finalProb * 100, prior:oldTargetPrior});
+    updateProposition(conn.target.id, { prob: finalProb * 100, prior: oldTargetPrior });
   }
 };
 
@@ -110,7 +110,7 @@ const rePlumb = (instance) => {
     });
 
     // make .window divs draggable
-    instance.draggable(jsPlumb.getSelector(".drag-drop .window"));
+    instance.draggable(jsPlumb.getSelector(".drag-drop .window"), { handle: ".drag-drop .window .dragHandle" });
 
     // add input and output endpoints.
     instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "LeftMiddle" }, InputEndpoint);
@@ -144,7 +144,10 @@ $(document).ready(function () {
     let prior = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
     let newCard = `
     <div class="window" id="${id}" style="top:${e.pageY}px; left:${e.pageX}px">
-      <textarea class="proposition">Proposition</textarea>
+      <div class="dragHandle" />
+      <div class="text" contenteditable="true">
+        <p class="proposition">Proposition</p>
+      </div>
       <p class="prior">
         <span class="label">Prior</span>
         <span class="value">${prior}%</span>
@@ -153,6 +156,7 @@ $(document).ready(function () {
         <span class="label">Probability</span>
         <span class="value">${prior}%</span>
       </p>
+      <div class="expandHandle" />
     </div>
     `
     $("#canvas").append(newCard);

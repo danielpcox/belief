@@ -1,263 +1,43 @@
+@import url('variables.css');
+@import url('window.css');
+@import url('animations.css');
+@import url('notifications.css');
 
-
-/** Variables **/
-:root {
-/* General Colors */
-  --color-content-background: #eee;
-  --color-content: #000;
-
-  --color-blue: #094dff;
-  --color-red: #eb001a;
-  --color-orange: #f16900;
-  --color-yellow: #f8b400;
-  --color-green: #4fce31;
-  --color-light-blue: #4ab0fc;
-  --color-purple: #302cc9;
-  --color-pink: #eb0035;
-
-
-/* Specific Colors */
-  --color-window-background-h: 0;
-  --color-window-background-s: 0%;
-  --color-window-background-l: 100%;
-  --color-window-background-a: 1;
-  --color-window-background-hsla: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), var(--color-window-background-a));
-  --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.6));
-
-/* Typography * Layout */
-  --font-family-base: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  --font-weight-base: 400;
-  --spacing-base: 8px;
-  --z-index-window-base: 24;
-  
-/* Decorations */
-  --shadow-blur: 6px;
-  --shadow-position-base: 0 var(--shadow-blur);
-  --box-shadow-base: var(--shadow-position-base) var(--shadow-blur) calc(var(--shadow-blur) * -1) var(--color-content);
-  --border-radius-base: 8px;
-
-  /* Transitions */
-  --transition-base-duration-and-timing: .15s ease;
-  --transition-base: all var(--transition-base-duration-and-timing);
-
-}
-/* Animations */
-@keyframes scale-pulse {
-    0% {
-        transform-origin: center center;
-        transform: scale(1);
-        opacity: 1;
-    } 100% {
-        transform-origin: center center;
-        transform: scale(1.4);
-        opacity: 0.8;
-    }
+html {
+  background-color: var(--color-content-background);
+  color: var(--color-content);
+  height: 100vh;
+  width: 100vw;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-base);
+  background-image: url("data:image/svg+xml;utf-8,\
+      <svg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'>\
+          <circle cx='8' cy='8' r='1.25' fill='rgba(255,255,255,0.5)' />\
+      </svg>");
+  background-repeat: repeat;
+  background-position: calc(var(--spacing-base) * 0.5) calc(var(--spacing-base) * 0.5);
+  background-size: auto auto;
+  position: relative;
 }
 
-/* Root & HTML */
+body {
+  margin: 0;
+  padding: 0;
+}
 
-    html {
-        background-color: var(--color-content-background);
-        color: var(--color-content);
-        height: 100vh;
-        width: 100vw;
-        font-family: var(--font-family-base);
-        font-weight: var(--font-weight-base);
-        background-image: url("data:image/svg+xml;utf-8,\
-            <svg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'>\
-                <circle cx='8' cy='8' r='1.25' fill='rgba(255,255,255,0.5)' />\
-            </svg>");
-        background-repeat: repeat;
-        background-position: calc(var(--spacing-base) * 0.5) calc(var(--spacing-base) * 0.5);
-        background-size: auto auto;
-        position: relative;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-    }
+#canvas {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
-    /* Reset interaction styles because this is an app */
-    html {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-    }
-    html:active {
-        cursor: default;
-    }
-    *,
-    *:after,
-    *:before {
-        user-select: none;
-        cursor: default;
-    }
-    *::selection {
-    }
-
-    .demo {
-        /* for IE10+ touch devices */
-        touch-action:none;
-        counter-reset: windows;
-    }
-    textarea,
-    input {
-        -webkit-user-select: auto;
-        -moz-user-select: auto;
-        -ms-user-select: auto;
-        user-select: auto;
-        cursor: text;
-    }
-
-/** ELEMENT INITIAL POSITIONS **/
-
-    #dragDropWindow1 { top: calc((var(--spacing-base)) * 10); left: calc((var(--spacing-base)) * 12); }
-    #dragDropWindow2 { top: calc((var(--spacing-base)) * 15); left: calc((var(--spacing-base)) * 50); }
-    #dragDropWindow3 { top: calc((var(--spacing-base)) * 40); left: calc((var(--spacing-base)) * 12); }
-    #dragDropWindow4 { top: calc((var(--spacing-base)) * 45); left: calc((var(--spacing-base)) * 50); }
-
-/** Propositions **/
-    #canvas {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-    .window {
-        background-color: var(--color-window-background-hsla);
-        box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
-        border-radius: var(--border-radius-base);
-        padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
-        width: calc(18 * var(--spacing-base));
-        min-height: calc(15 * var(--spacing-base));
-        transition: var(--transition-base);
-        transition-property: color, background-color, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
-        z-index: var(--z-index-window-base);
-        position: absolute;
-        line-height: 1.4;
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
-        display: flex;
-        flex-direction: column;
-    }
-    .window:hover {
-        background-color: var(--color-window-background-hsla-hover);
-        box-shadow: 0 8px 8px -8px rgba(0,0,0,.2), 0 0 3px -2px var(--color-content);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        z-index: calc(var(--z-index-window-base) + 10);
-        transform: scale(1.01);
-    }
-    /* Spacing element */
-    .window:after {
-        --page-margin: calc(var(--spacing-base) * -5);
-        content: '';
-        position: absolute;
-        pointer-events: none;
-        top: var(--page-margin);
-        bottom: var(--page-margin);
-        left: var(--page-margin);
-        right: var(--page-margin);
-    }
-
-    .proposition {
-        font-weight: bold;
-        line-height: 1.2;
-        font-size: 1em;
-        margin: calc(var(--spacing-base) * -0.25) calc(var(--spacing-base) * -0.5) auto;
-        padding: calc(var(--spacing-base) * 0.25) calc(var(--spacing-base) * 0.5) calc(var(--spacing-base) * 0.5);
-        border: 0;
-        user-select: auto;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background: transparent;
-        height: auto;
-        cursor: text;
-        resize: none;
-    }
-
-    .prior,
-    .probability {
-        opacity: 0.7;
-        font-size: 0.7em;
-        margin: 0;
-        letter-spacing: .03em;
-        display: flex;
-    }
-
-
-    .label {
-        flex: 0 0 5em;
-    }
-    .ratio {
-        word-spacing: 0;
-        white-space: nowrap;
-    }
-    .ratio .n {}
-    .ratio .d {}
-    .ratio .d:before {
-        content: ':'
-    }
-
-    .prior {
-    }
-
-    .probability {
-      font-weight:bold;
-    }
-
-
-/* Connectors */    
-    path, g, rectangle, circle {
-        cursor: pointer;
-        transition: fill var(--transition-base-duration-and-timing), stroke var(--transition-base-duration-and-timing);
-    }
-
-    .jtk-endpoint.jtk-hover {
-        animation: scale-pulse alternate infinite;
-        animation-duration: 0.5s;
-    }
-    .jtk-endpoint.dragActive {
-        animation: scale-pulse alternate infinite;
-        animation-duration: 1.2s;
-    }
-
-    .jtk-overlay {
-        background-color: var(--color-content-background);
-        border-radius: 100px;
-        padding: 2px 4px;
-    }
-
-/* Notifications */
-
-    .notifications {
-        list-style: none;
-        margin: calc(var(--spacing-base));
-        padding: 0;
-    }
-
-    .notifications li {
-        padding: 0;
-        margin: calc(var(--spacing-base) / 2);
-        margin-right: auto;
-    }
-
-    .notifications li p {
-        margin: 0;
-        display: inline-block;
-        background-color: var(--color-window-background-hsla-hover);
-        padding: calc(var(--spacing-base) / 2);
-        border-radius: calc(var(--border-radius-base) / 2);
-    }
-
-/* JTK Interaction Styling */
-
-    .jtk-draggable:active,
-    .jtk-dragged {
-        cursor: grabbing;
-    }
-    .jtk-draggable {
-        cursor: grab;
-    }
+.jtk-drag-select * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;    
+}
