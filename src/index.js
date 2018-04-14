@@ -2,6 +2,8 @@ import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
 
+require('../style/app.scss');
+
 // Setup
 //
 const colorRed = "rgb(255,59,48)";
@@ -59,8 +61,6 @@ const updateProposition = (id, newProp) => {
   $("#" + id + " .prior .value").text(newProp.prior.toString() + "%");
   $("#" + id + " .probability .value").text(newProp.prob.toString() + "%");
 }
-
-
 
 // Update Connections (callback)
 //
@@ -120,6 +120,8 @@ const rePlumb = (instance) => {
 
 
 
+
+
 // Actually run jsPlumb
 let instance;
 jsPlumb.ready(function () {
@@ -128,30 +130,38 @@ jsPlumb.ready(function () {
 });
 
 
-
-
 // New Proposition Card Creation
 //
 const stopDoubleclickPropagation = (id) => {
-  $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
-    e.stopPropagation();
-  });
+  // $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
+  //   e.stopPropagation();
+  // });
 }
 
 $(document).ready(function () {
+
   $("#canvas").dblclick(function (e) {
     let id = uuid();
-    let prior = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
+    let prior = parseFloat(prompt("Best guess probability for the new statement?", "50"));
     let newCard = `
     <div class="window" id="${id}" style="top:${e.pageY}px; left:${e.pageX}px">
       <div class="dragHandle" />
-      <div class="text" contenteditable="true">
-        <p class="proposition">Proposition</p>
+      <p class="text" contenteditable="true">Statement</p>
+      <div class="popover">
+        <p class="prior popover-toggle">
+          <span class="label">Prior</span>
+          <span class="value">${prior}%</span>
+        </p>
+        <div class="prior-control popover-content">
+          <div class="control-range">
+            <label for ${id}-prior-content>
+              Prior Probability: ${prior}
+              <input class="control-range" type="range" name="${id}-prior-control" defaultValue=${prior}/>
+              <p class="control-help">< Less likely | More likely ></p>
+            </label>
+          </p>
+        </div>
       </div>
-      <p class="prior">
-        <span class="label">Prior</span>
-        <span class="value">${prior}%</span>
-      </p>
       <p class="probability">
         <span class="label">Probability</span>
         <span class="value">${prior}%</span>
@@ -160,6 +170,15 @@ $(document).ready(function () {
     </div>
     `
     $("#canvas").append(newCard);
+
+
+    // Open popovers on click of their trigger
+    //
+    $('.popover').click(function () {
+      $(this).toggleClass('popover-open');
+      return false;
+    });
+
     updateProposition(id, { prob: prior, prior: prior });
     // reapply stopPropagation
     stopDoubleclickPropagation(id);

@@ -13,6 +13,8 @@
   --color-purple: #302cc9;
   --color-pink: #eb0035;
 
+  --color-intent-interaction: var(--color-blue);
+
 
 /* Specific Colors */
   --color-window-background-h: 0;
@@ -25,13 +27,16 @@
 /* Typography * Layout */
   --font-family-base: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   --font-weight-base: 400;
+  --font-size-base: 14px;
+  --font-size-sm: 10px;
   --spacing-base: 8px;
   --z-index-window-base: 24;
   
 /* Decorations */
-  --shadow-blur: 6px;
+  --shadow-blur: 0px;
   --shadow-position-base: 0 var(--shadow-blur);
   --box-shadow-base: var(--shadow-position-base) var(--shadow-blur) calc(var(--shadow-blur) * -1) var(--color-content);
+  --box-shadow-base: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
   --border-radius-base: 8px;
 
   /* Transitions */
