@@ -1,6 +1,7 @@
 import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
+import network from './network'
 
 // Setup
 //
@@ -169,3 +170,4 @@ $(document).ready(function () {
   stopDoubleclickPropagation();
 })
 
+console.log(network)
