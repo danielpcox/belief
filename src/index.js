@@ -10,8 +10,6 @@ state.setProbabilityUpdatedCallback((id, newProbability) => {
 });
 
 // Extracted function for reapplying jsPlumb
-// TODO: This might be adding all new endpoints with every call. Is addEndpoint idempotent?
-// TODO: Getting ".each iteration failed : TypeError: Cannot read property 'force' of undefined" for each pre-existing card when rePlumb is called
 const rePlumb = (instance) => {
   instance.batch(function () {
 
