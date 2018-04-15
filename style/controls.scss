@@ -10,3 +10,36 @@ label {
 .control-help {
   margin: calc(var(--spacing-base) * .25) 0 calc(var(--spacing-base) * .25);
 }
+
+.probability-slider-help {
+  width: 100%;
+  position: relative;
+  height: 1em;
+  opacity: 0.5;
+  font-weight: bold;
+
+  > * {
+    text-align: center;
+    position: absolute;
+    width: 20%;
+    
+    &:nth-child(1) {
+      left: 0;
+      text-align: left;
+    }
+    &:nth-child(2) {
+      left: 20%;
+    }
+    &:nth-child(3) {
+      left: 40%;
+    }
+    &:nth-child(4) {
+      left: 60%;
+    }
+    &:nth-child(5) {
+      left: 80%;
+      right: 0;
+      text-align: right;
+    }
+  }
+}

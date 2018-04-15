@@ -4,6 +4,8 @@
   position: relative;
 
   .popover-toggle {
+    cursor: pointer;
+    
     &:hover {
       color: var(--color-intent-interaction);
     }

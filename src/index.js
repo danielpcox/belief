@@ -143,6 +143,7 @@ $(document).ready(function () {
   $("#canvas").dblclick(function (e) {
     let id = uuid();
     let prior = parseFloat(prompt("Best guess probability for the new statement?", "50"));
+    let prob = prior;
     let newCard = `
     <div class="window" id="${id}" style="top:${e.pageY}px; left:${e.pageX}px">
       <div class="dragHandle" />
@@ -155,17 +156,22 @@ $(document).ready(function () {
         <div class="prior-control popover-content">
           <div class="control-range">
             <label for ${id}-prior-content>
-              Prior Probability: ${prior}
+              ${prior}
               <input class="control-range" type="range" name="${id}-prior-control" defaultValue=${prior}/>
-              <p class="control-help">< Less likely | More likely ></p>
+              <div class="probability-slider-help">
+                <span>0%</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>100%</span>
+              </div>
             </label>
-          </p>
+          </div>
         </div>
       </div>
-      <p class="probability">
-        <span class="label">Probability</span>
-        <span class="value">${prior}%</span>
-      </p>
+      <div class="probability">
+        <div class="value" style="width: ${prior}%" />
+      </div>
       <div class="expandHandle" />
     </div>
     `
