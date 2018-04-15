@@ -1,13 +1,21 @@
 import uuid from 'uuid/v4'
 import _ from 'lodash'
 
-let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statement", prior:0.5, contributions:1, probability:0.5} }
+let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statement", prior:0.5, contributions:['uuid1','uuid2'], probability:0.5} }
 let connections = {}; // e.g. {'uuid1': {'uuid2': 3.0}}
 let probabilityUpdatedCallback = Function.prototype; // callback function to call with id of updated probability and new probability
 
 const recalculateProbabilitiesFrom = (id) => {
   let priorOdds = statements[id].prior / (1 - statements[id].prior)
-  let posteriorOdds = priorOdds * statements[id].contributions;
+  let incomingLRsandProbs = _.map(Array.from(statements[id].contributions),(cid) => ({lr:connections[cid][id],prob:statements[cid].probability}))
+  let contributions = _.map(incomingLRsandProbs,(contrib) => {
+    let lrProbProj = contrib.lr / (contrib.lr + 1)
+    let combinedProb = (contrib.prob * lrProbProj) + ((1 - contrib.prob) * (1 - lrProbProj))
+    let combinedLR = combinedProb / (1 - combinedProb)
+    return combinedLR;
+  });
+  let combinedContributions = _.reduce(contributions,(a,b) => a*b, 1);
+  let posteriorOdds = priorOdds * combinedContributions;
   let posteriorProbability = posteriorOdds / (1 + posteriorOdds)
   statements[id].probability = posteriorProbability;
 
@@ -15,19 +23,7 @@ const recalculateProbabilitiesFrom = (id) => {
   probabilityUpdatedCallback(id, posteriorProbability);
 
   // update contributions to all downstream and recurse
-  _.each(connections[id], (lr, targetId) => {
-
-    let sourceProb = statements[id].probability;
-    let previousTargetContributions = statements[targetId].contributions;
-    let lrProbProj = lr / (lr + 1)
-    let combinedProb = (sourceProb * lrProbProj) + ((1 - sourceProb) * (1 - lrProbProj))
-    console.log("combinedProb", combinedProb);
-    let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
-    console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
-    let newTargetContributions = previousTargetContributions * combinedLikelihoodRatio
-    console.log("newContributions", newTargetContributions);
-    statements[targetId].contributions = newTargetContributions;
-
+  _.each(connections[id], (lr,targetId) => {
     recalculateProbabilitiesFrom(targetId);
   });
 
@@ -65,7 +61,7 @@ export default {
       },
       text: "Statement",
       prior: 0.5,
-      contributions: 1,
+      contributions: new Set(),
       probability: 0.5 // Note that you don't set the probability directly. It is calculated from connections.
     };
     return id;
@@ -82,6 +78,7 @@ export default {
 
   setConnection: (sourceId, targetId, lr) => {
     _.set(connections, [sourceId, targetId], lr);
+    statements[targetId].contributions.add(sourceId);
     recalculateProbabilitiesFrom(sourceId);
 
   },
