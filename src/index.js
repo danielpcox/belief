@@ -2,6 +2,7 @@ import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
 import state from './state'
+require('../style/app.scss');
 
 // Setup
 //
@@ -125,6 +126,8 @@ const rePlumb = (instance) => {
 
 
 
+
+
 // Actually run jsPlumb
 let instance;
 jsPlumb.ready(function () {
@@ -133,17 +136,16 @@ jsPlumb.ready(function () {
 });
 
 
-
-
 // New Proposition Card Creation
 //
 const stopDoubleclickPropagation = (id) => {
-  $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
-    e.stopPropagation();
-  });
+  // $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
+  //   e.stopPropagation();
+  // });
 }
 
 $(document).ready(function () {
+
   $("#canvas").dblclick(function (e) {
     let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
     let top = e.pageY;
@@ -153,22 +155,45 @@ $(document).ready(function () {
     let newCard = `
     <div class="window" id="${id}" style="top:${top}px; left:${left}px">
       <div class="dragHandle" />
-      <div class="text" contenteditable="true">
-        <p class="proposition">Proposition</p>
+      <p class="text" contenteditable="true">Statement</p>
+      <div class="popover">
+        <p class="prior popover-toggle">
+          <span class="label">Prior</span>
+          <span class="value">${priorPercent}%</span>
+        </p>
+        <div class="prior-control popover-content">
+          <div class="control-range">
+            <label for ${id}-prior-content>
+              ${priorPercent}
+              <input class="control-range" type="range" name="${id}-prior-control" defaultValue=${priorPercent}/>
+              <div class="probability-slider-help">
+                <span>0%</span>
+                <span>|</span>
+                <span>|</span>
+                <span>|</span>
+                <span>100%</span>
+              </div>
+            </label>
+          </div>
+        </div>
       </div>
-      <p class="prior">
-        <span class="label">Prior</span>
-        <span class="value">${priorPercent}%</span>
-      </p>
-      <p class="probability">
-        <span class="label">Probability</span>
-        <span class="value">${priorPercent}%</span>
-      </p>
+      <div class="probability">
+        <div class="value" style="width: ${priorPercent}%" />
+      </div>
       <div class="expandHandle" />
     </div>
     `
     $("#canvas").append(newCard);
     //updateProposition(id, { prob: prior, prior: prior });
+
+
+    // Open popovers on click of their trigger
+    //
+    $('.popover').click(function () {
+      $(this).toggleClass('popover-open');
+      return false;
+    });
+
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
     rePlumb(instance);
@@ -177,6 +202,10 @@ $(document).ready(function () {
   stopDoubleclickPropagation();
 })
 
+<<<<<<< HEAD
 //id1 = state.newStatement(0,0);
 //state.newStatement(1,1);
 //state.setConnection();
+=======
+console.log(network)
+>>>>>>> master

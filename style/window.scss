@@ -1,10 +1,14 @@
 /* Propositions */
 
+
 .window {
+  --window-vertical-padding: var(--spacing-base);
+  --window-horizontal-padding: calc(1.5 * var(--spacing-base));
+
   background-color: var(--color-window-background-hsla);
   box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
   border-radius: var(--border-radius-base);
-  padding: var(--spacing-base) calc(1.5 * var(--spacing-base));
+  padding: var(--window-vertical-padding) var(--window-horizontal-padding);
   width: calc(18 * var(--spacing-base));
   min-height: calc(15 * var(--spacing-base));
   transition: var(--transition-base);
@@ -17,6 +21,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .window:hover {
   z-index: calc(var(--z-index-window-base) + 10);
 }
@@ -24,6 +29,7 @@
 /* Scrolling area spacing element */
 .window:after {
   --window-scrolling-spacing-size: calc(var(--spacing-base) * -5);
+
   content: '';
   position: absolute;
   pointer-events: none;
@@ -36,6 +42,7 @@
 /* Hover area spacing element */
 .window:before {
   --window-hover-spacing-size: calc(var(--spacing-base) * -3);
+
   content: '';
   position: absolute;
   top: var(--window-hover-spacing-size);
@@ -47,38 +54,35 @@
 }
 
 .text {
-  margin: 0 0 auto;
-}
-
-.proposition {
   font-weight: bold;
   line-height: 1.2;
-  font-size: 1em;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  user-select: auto;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: transparent;
-  height: auto;
+  margin: 0 calc(var(--window-horizontal-padding) * -1) auto;
+  padding: 0 var(--window-horizontal-padding) var(--spacing-base);
+  transition: all var(--transition-base-duration-and-timing);
   cursor: text;
-  resize: none;
+
+  &:hover {
+    color: var(--color-intent-interaction);
+  }
+
+  &:focus {
+    color: var(--color-intent-interaction);
+    outline: none;
+  }
 }
 
 .prior,
 .probability {
   opacity: 0.7;
-  font-size: 0.7em;
+  font-size: var(--font-size-sm);
   margin: 0;
-  letter-spacing: .03em;
   display: flex;
+  font-weight: bold;
 }
 
 
 .label {
-  flex: 0 0 5em;
+  flex: 1 1 100%;
 }
 .ratio {
   word-spacing: 0;
@@ -90,12 +94,9 @@
   content: ':'
 }
 
-.prior {
-}
+.prior { }
 
-.probability {
-  font-weight:bold;
-}
+.probability { }
 
 
 /* Drag Handle */
@@ -135,3 +136,4 @@
   cursor: grabbing;
   background-color: rgba(0,0,0,.5);
 }
+

@@ -1,7 +1,10 @@
-@import url('variables.css');
-@import url('window.css');
-@import url('animations.css');
-@import url('notifications.css');
+@import 'variables';
+@import 'animations';
+@import 'notifications';
+@import 'window';
+@import 'connectors';
+@import 'popovers';
+@import 'controls';
 
 html {
   background-color: var(--color-content-background);
