@@ -27,33 +27,12 @@ const recalculateProbabilitiesFrom = (id) => {
     recalculateProbabilitiesFrom(targetId);
   });
 
-
-
-  //  let sourceProb = statements[sourceId].probability
-  //  let previousTargetProbability = statements[targetId].probability
-  //  let previousTargetOdds = previousTargetProbability / (1 - previousTargetProbability)
-  //  let lrProbProj = lr / (lr + 1)
-  //  let combinedProb = (sourceProb * lrProbProj) + ((1 - sourceProb) * (1 - lrProbProj))
-  //  console.log("combinedProb", combinedProb);
-  //  let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
-  //  console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
-  //  let newOdds = previousTargetOdds * combinedLikelihoodRatio
-  //  let newTargetProbability = newOdds / (newOdds + 1)
-  //  console.log("newTargetProbability", newTargetProbability);
-  //  statements[targetId].probability = newTargetProbability;
-
-  // propagate forward
-  //if (connections[targetId]) {
-  //  _.keys(connections[targetId])
-  //}
-  //_.each(connections[id],(lr,targetId) => );
-
 };
 
 export default {
 
   newStatement: (top, left) => {
-    let id = uuid();
+    let id = 'uuid'+uuid();
     statements[id] = {
       position: {
         top: top,
@@ -66,6 +45,8 @@ export default {
     };
     return id;
   },
+
+  exists: (id) => statements[id],
 
   setText: (id, text) => {
     statements[id].text = text;
@@ -97,6 +78,7 @@ export default {
     delete connections[id];
     // propagate forward
     _.each(targetIds, (targetId) => {
+      statements[targetId].contributions.delete(id);
       recalculateProbabilitiesFrom(targetId);
     });
   },
@@ -104,6 +86,7 @@ export default {
   deleteConnection: (sourceId, targetId) => {
     // remove pair from connections
     delete connections[sourceId][targetId];
+    statements[targetId].contributions.delete(sourceId);
     // propagate forward
     recalculateProbabilitiesFrom(targetId);
   },

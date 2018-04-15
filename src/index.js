@@ -1,6 +1,5 @@
 import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
-import uuid from 'uuid/v4'
 import utils from './utils';
 import card from './card'
 import state from './state'
@@ -9,13 +8,10 @@ require('../style/app.scss');
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
   $("#" + id + " .probability .value").text(utils.displayProbability(newProbability));
-  console.log(newProbability.toString());
-  console.log(id.toString());
-  console.log($("#" + id + " .probability .value"));
 });
 
 // Extracted function for reapplying jsPlumb
-const rePlumb = (instance) => {
+const rePlumb = (instance, id) => {
   instance.batch(function () {
 
     // event bindings
@@ -38,12 +34,16 @@ const rePlumb = (instance) => {
     //      console.log("Connection clicked.");
     //    });
 
+    let statementSelector = `#${id}`;
+    let el = jsPlumb.getSelector(statementSelector);
+
     // make .window divs draggable
-    instance.draggable(jsPlumb.getSelector(".drag-drop .window"), { handle: ".drag-drop .window .dragHandle" });
+    instance.draggable(el, { handle: (statementSelector+" .dragHandle") });
 
     // add input and output endpoints.
-    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "LeftMiddle" }, config.InputEndpoint);
-    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "RightMiddle" }, config.OutputEndpoint);
+    instance.addEndpoint(el, { anchor: "LeftMiddle" }, config.InputEndpoint);
+    instance.addEndpoint(el, { anchor: "RightMiddle" }, config.OutputEndpoint);
+
   });
 }
 
@@ -55,7 +55,6 @@ const rePlumb = (instance) => {
 let instance;
 jsPlumb.ready(function () {
   instance = jsPlumb.getInstance(config.instanceOptions);
-  rePlumb(instance);
 });
 
 
@@ -123,17 +122,20 @@ $(document).ready(function () {
 
     // Delete item control
     $('.tools .delete').click(function (id) {
-      let statement = $(this).parents('.window').attr('id');
+      let statementId = $(this).parents('.window').attr('id');
 
       // instance.detachAllConnections(statement);
-      jsPlumb.remove(statement);
-      state.deleteStatement(statement);
-      rePlumb(instance);
+
+      if(state.exists(statementId)) {
+        instance.remove(statementId);
+        state.deleteStatement(statementId);
+        rePlumb(instance, statementId);
+      }
     });
 
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
-    rePlumb(instance);
+    rePlumb(instance, id);
   });
 
   stopDoubleclickPropagation();
