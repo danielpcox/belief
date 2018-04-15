@@ -1,12 +1,16 @@
 import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
+import card from './card'
 import state from './state'
 import config from './config'
 require('../style/app.scss');
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
-  $("#" + id + " .probability .value").text((newProbability * 100).toString() + "%");
+  $("#" + id + " .probability .value").text((newProbability * 100).toString());
+  console.log(newProbability.toString());
+  console.log(id.toString());
+  console.log($("#" + id + " .probability .value"));
 });
 
 // Extracted function for reapplying jsPlumb
@@ -70,40 +74,7 @@ $(document).ready(function () {
     let left = e.pageX;
     let id = state.newStatement(top, left);
     state.setPrior(id, priorPercent / 100);
-    let newCard = `
-    <div class="window" id="${id}" style="top:${top}px; left:${left}px">
-      <div class="dragHandle" />
-      <p class="text" contenteditable="true">Statement</p>
-      <div class="popover">
-        <p class="prior popover-toggle">
-          <span class="label">Prior</span>
-          <span class="value">${priorPercent}%</span>
-        </p>
-        <div class="prior-control popover-content">
-          <div class="control-range">
-            <label for ${id}-prior-content>
-              ${priorPercent}
-              <input class="control-range" type="range" name="${id}-prior-control" defaultValue=${priorPercent}/>
-              <div class="probability-slider-help">
-                <span>0%</span>
-                <span>|</span>
-                <span>|</span>
-                <span>|</span>
-                <span>100%</span>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="tools">
-        <p class="delete">Delete</p>
-      </div>
-      <div class="probability">
-        <div class="value" style="width: ${priorPercent}%" />
-      </div>
-      <div class="expandHandle" />
-    </div>
-    `
+    let newCard = card.createCard(id, top, left, priorPercent);
     $("#canvas").append(newCard);
     //updateProposition(id, { prob: prior, prior: prior });
 
@@ -115,19 +86,48 @@ $(document).ready(function () {
     //   return false;
     // });
 
+
     // Open popovers on click of their trigger
-    //
     $('.popover').click(function () {
       $(this).toggleClass('popover-open');
       return false;
     });
 
-    // Delete item control
-    //
-    $('.tools .delete').click(function (id) {
-      instance.remove(id);
-      state.deleteStatement(id);
+    // Power the create-following statement capability
+    $('.createFollowingHandle').click(function () {
+      // Get the current statement ID
+      let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
+      let oldStatement = $(this).parents('.window').attr('id');
+      let newTop = oldStatement.top;
+      let newLeft = oldStatement.left + 100;
+      let newStatementId = state.newStatement(newTop, newLeft);
+      state.setPrior(newStatementId, priorPercent / 100);
+      // run function to create new statment from template
+      // with the same top property as the source statement
+      // and the left property as some spacing value added
+      // to the source statement
+      // end
+      card.createCard(newStatementId, newTop, newLeft, priorPercent);
+      $("#canvas").append(newCard);
       return false;
+    });
+
+    // Power the prior editing capability
+    $('.prior input').change(function () {
+      let statement = $(this).parents('.window').attr('id');
+
+      state.setPrior(statement, (this.value / 100));
+      return false;
+    });
+
+    // Delete item control
+    $('.tools .delete').click(function (id) {
+      let statement = $(this).parents('.window').attr('id');
+
+      // instance.detachAllConnections(statement);
+      jsPlumb.remove(statement);
+      state.deleteStatement(statement);
+      rePlumb(instance);
     });
 
     // reapply stopPropagation

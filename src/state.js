@@ -15,7 +15,7 @@ const recalculateProbabilitiesFrom = (id) => {
   probabilityUpdatedCallback(id, posteriorProbability);
 
   // update contributions to all downstream and recurse
-  _.each(connections[id], (lr,targetId) => {
+  _.each(connections[id], (lr, targetId) => {
 
     let sourceProb = statements[id].probability;
     let previousTargetContributions = statements[targetId].contributions;
@@ -50,7 +50,7 @@ const recalculateProbabilitiesFrom = (id) => {
   //if (connections[targetId]) {
   //  _.keys(connections[targetId])
   //}
-    //_.each(connections[id],(lr,targetId) => );
+  //_.each(connections[id],(lr,targetId) => );
 
 };
 
@@ -96,10 +96,10 @@ export default {
 
   deleteStatement: (id) => {
     // remove id from statements
-    targetIds = _.keys(connections[id]);
+    let targetIds = _.keys(connections[id]);
     delete connections[id];
     // propagate forward
-    _.each(targetIds,(targetId) => {
+    _.each(targetIds, (targetId) => {
       recalculateProbabilitiesFrom(targetId);
     });
   },
