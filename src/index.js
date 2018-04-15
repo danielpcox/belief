@@ -14,7 +14,7 @@ state.setProbabilityUpdatedCallback((id, newProbability) => {
 const rePlumb = (instance, id) => {
   instance.batch(function () {
 
-    // event bindings
+    // event bindings 
     instance.bind("connection", function (info, originalEvent) {
       let conn = info.connection;
       if (!conn.getOverlay("label")) {
@@ -38,7 +38,7 @@ const rePlumb = (instance, id) => {
     let el = jsPlumb.getSelector(statementSelector);
 
     // make .window divs draggable
-    instance.draggable(el, { handle: (statementSelector+" .dragHandle") });
+    instance.draggable(el, { handle: (statementSelector + " .dragHandle") });
 
     // add input and output endpoints.
     instance.addEndpoint(el, { anchor: "LeftMiddle" }, config.InputEndpoint);
@@ -61,7 +61,7 @@ jsPlumb.ready(function () {
 // New Proposition Card Creation
 //
 const stopDoubleclickPropagation = (id) => {
-  $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
+  $(id ? `#canvas #${id}` : "#canvas *").dblclick(function (e) {
     e.stopPropagation();
   });
 }
@@ -78,23 +78,8 @@ $(document).ready(function () {
     $("#canvas").append(newCard);
     //updateProposition(id, { prob: prior, prior: prior });
 
-    // Update prior probability value from range input
-    //
-    // $('.prior-control input').onChange(function () {
-    //   alert('pop');
-    //   $(this).setPrior(this.id, this.value);
-    //   return false;
-    // });
-
-
-    // Open popovers on click of their trigger
-    $('.popover').click(function () {
-      $(this).toggleClass('popover-open');
-      return false;
-    });
-
     // Power the create-following statement capability
-    $('.createFollowingHandle').click(function () {
+    $(`#${id} .createFollowingHandle`).click(function () {
       // Get the current statement ID
       let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
       let oldStatement = $(this).parents('.window').attr('id');
@@ -113,20 +98,18 @@ $(document).ready(function () {
     });
 
     // Power the prior editing capability
-    $('.prior input').change(function () {
+    $(`#${id} .prior input`).change(function () {
       let statement = $(this).parents('.window').attr('id');
 
       state.setPrior(statement, (this.value / 100));
       return false;
     });
 
-    // Delete item control
-    $('.tools .delete').click(function (id) {
+    // Power the delete item control
+    $(`#${id} .tools .delete`).click(function (id) {
       let statementId = $(this).parents('.window').attr('id');
 
-      // instance.detachAllConnections(statement);
-
-      if(state.exists(statementId)) {
+      if (state.exists(statementId)) {
         instance.remove(statementId);
         state.deleteStatement(statementId);
         rePlumb(instance, statementId);
