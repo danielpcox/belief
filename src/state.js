@@ -96,7 +96,12 @@ export default {
 
   deleteStatement: (id) => {
     // remove id from statements
+    targetIds = _.keys(connections[sourceId]);
+    delete connections[sourceId];
     // propagate forward
+    _.each(targetIds,(targetId) => {
+      recalculateProbabilitiesFrom(targetId);
+    });
   },
 
   deleteConnection: (sourceId, targetId) => {
