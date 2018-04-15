@@ -96,8 +96,8 @@ export default {
 
   deleteStatement: (id) => {
     // remove id from statements
-    targetIds = _.keys(connections[sourceId]);
-    delete connections[sourceId];
+    targetIds = _.keys(connections[id]);
+    delete connections[id];
     // propagate forward
     _.each(targetIds,(targetId) => {
       recalculateProbabilitiesFrom(targetId);
