@@ -39,7 +39,7 @@ export default {
           </div>
         </label>
         <div class="probability">
-          <span>Probability</span><span class="value">${utils.displayProbability(priorPercent)}</span><span class="unit">%</span>
+          <span>Probability</span><span class="value">${utils.displayProbability(priorPercent / 100)}</span><span class="unit">%</span>
         </div>
         <div class="tools">
           <a class="delete">

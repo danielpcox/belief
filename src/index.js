@@ -8,7 +8,7 @@ import config from './config'
 require('../style/app.scss');
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
-  $("#" + id + " .probability .value").text((newProbability * 100).toString());
+  $("#" + id + " .probability .value").text(utils.displayProbability(newProbability));
   console.log(newProbability.toString());
   console.log(id.toString());
   console.log($("#" + id + " .probability .value"));

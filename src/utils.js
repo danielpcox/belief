@@ -1,11 +1,11 @@
 import config from './config.js';
 
-const readableProbabilityDecimals = 2;
+const readableDecimals = 2;
 
 export default {
 
   displayProbability: (prob) => {
-    let displayableProb = Math.round(prob, readableProbabilityDecimals);
+    let displayableProb = Math.round(prob * 100, readableDecimals).toString();
     return displayableProb;
   }
 
