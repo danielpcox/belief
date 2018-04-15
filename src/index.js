@@ -200,12 +200,4 @@ $(document).ready(function () {
   });
 
   stopDoubleclickPropagation();
-})
-
-<<<<<<< HEAD
-//id1 = state.newStatement(0,0);
-//state.newStatement(1,1);
-//state.setConnection();
-=======
-console.log(network)
->>>>>>> master
+});
