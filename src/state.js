@@ -101,7 +101,9 @@ export default {
 
   deleteConnection: (sourceId, targetId) => {
     // remove pair from connections
+    delete connections[sourceId][targetId];
     // propagate forward
+    recalculateProbabilitiesFrom(targetId);
   },
 
 

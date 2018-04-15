@@ -2,101 +2,43 @@ import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
 import state from './state'
+import config from './config'
 require('../style/app.scss');
-
-// Setup
-//
-const colorRed = "rgb(255,59,48)";
-const colorBlue = "rgb(0,122,255)";
-const colorGreen = "rgb(76,217,100)";
-const defaultConnectionCurviness = 50;
-const InputColor = colorRed;
-const OutputEndpointColor = colorGreen;
-
-const instanceOptions = {
-  DragOptions: { cursor: 'pointer', zIndex: 2000 },
-  PaintStyle: { stroke: colorGreen },
-  EndpointHoverStyle: { fill: colorBlue },
-  HoverPaintStyle: { stroke: colorBlue },
-  EndpointStyle: { width: 16, height: 16, stroke: colorGreen },
-  Endpoint: "Dot",
-  Anchors: ["TopCenter", "TopCenter"],
-  Container: "canvas"
-};
-
-const exampleDropOptions = {
-  tolerance: "touch",
-  hoverClass: "dropHover",
-  activeClass: "dragActive"
-};
-
-const InputEndpoint = {
-  endpoint: ["Dot", { radius: 8 }],
-  paintStyle: { fill: colorGreen },
-  isSource: false,
-  isTarget: true,
-  scope: "probabilityConnection",
-  connectorStyle: { stroke: colorGreen, strokeWidth: 2 },
-  connector: ["Bezier", { curviness: defaultConnectionCurviness }],
-  maxConnections: -1,
-  dropOptions: exampleDropOptions
-};
-
-const OutputEndpoint = {
-  endpoint: ["Dot", { radius: 8 }],
-  paintStyle: { fill: colorGreen },
-  isSource: true,
-  isTarget: false,
-  scope: "probabilityConnection",
-  connectorStyle: { stroke: colorGreen, strokeWidth: 2 },
-  connector: ["Bezier", { curviness: defaultConnectionCurviness }],
-  maxConnections: -1,
-  dropOptions: exampleDropOptions
-};
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
   $("#" + id + " .probability .value").text((newProbability * 100).toString() + "%");
 });
 
-// Update Connections (callback)
-//
-const updateProb = function (conn, isRemoval) {
-  if (!conn.getOverlay("label")) {
-    let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
-    conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
-    stopDoubleclickPropagation();
-
-    state.setConnection(conn.source.id, conn.target.id, likelihoodRatio);
-  }
-};
-
-
-
-
 // Extracted function for reapplying jsPlumb
-// TODO: This might be adding all new endpoints with every call. Is addEndpoint idempotent?
-// TODO: Getting ".each iteration failed : TypeError: Cannot read property 'force' of undefined" for each pre-existing card when rePlumb is called
 const rePlumb = (instance) => {
   instance.batch(function () {
 
     // event bindings
     instance.bind("connection", function (info, originalEvent) {
-      updateProb(info.connection);
+      let conn = info.connection;
+      if (!conn.getOverlay("label")) {
+        let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
+        conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
+        stopDoubleclickPropagation();
+
+        state.setConnection(conn.source.id, conn.target.id, likelihoodRatio);
+      }
     });
     instance.bind("connectionDetached", function (info, originalEvent) {
-      updateProb(info.connection, true);
+      let conn = info.connection;
+      state.deleteConnection(conn.source.id, conn.target.id);
     });
 
-    instance.bind("click", function (component, originalEvent) {
-      console.log("Connection clicked.");
-    });
+    //    instance.bind("click", function (component, originalEvent) {
+    //      console.log("Connection clicked.");
+    //    });
 
     // make .window divs draggable
     instance.draggable(jsPlumb.getSelector(".drag-drop .window"), { handle: ".drag-drop .window .dragHandle" });
 
     // add input and output endpoints.
-    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "LeftMiddle" }, InputEndpoint);
-    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "RightMiddle" }, OutputEndpoint);
+    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "LeftMiddle" }, config.InputEndpoint);
+    instance.addEndpoint(jsPlumb.getSelector(".drag-drop .window"), { anchor: "RightMiddle" }, config.OutputEndpoint);
   });
 }
 
@@ -107,7 +49,7 @@ const rePlumb = (instance) => {
 // Actually run jsPlumb
 let instance;
 jsPlumb.ready(function () {
-  instance = jsPlumb.getInstance(instanceOptions);
+  instance = jsPlumb.getInstance(config.instanceOptions);
   rePlumb(instance);
 });
 

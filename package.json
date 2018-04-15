@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "webpack --mode development",
     "watch": "webpack --mode development --watch",
     "build": "webpack --mode production"
@@ -14,6 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^0.28.11",
+    "jest": "^22.4.3",
     "jquery": "^3.3.1",
     "jsplumb": "^2.6.9",
     "lodash": "^4.17.5",
