@@ -1,8 +1,8 @@
-// New Proposition Card Creation
-//
-
+import utils from './utils.js';
 export default {
 
+  // New Proposition Card Creation
+  //
   createCard: (id, top, left, priorPercent) => {
     let newCard = `
       <div class="window" id="${id}" style="top:${top}px; left:${left}px">
@@ -24,7 +24,7 @@ export default {
             <div class="prior-control popover-content">
               <div class="control-range">
                 <label for ${id}-prior-content>
-                  ${priorPercent}
+                  ${utils.displayProbability(priorPercent)}
                   <input class="control-range" type="range" name="${id}-prior-control" defaultValue=${priorPercent}/>
                   <div class="probability-slider-help">
                     <span>0%</span>
@@ -39,7 +39,7 @@ export default {
           </div>
         </label>
         <div class="probability">
-          <span>Probability</span><span class="value">${priorPercent}</span><span class="unit">%</span>
+          <span>Probability</span><span class="value">${utils.displayProbability(priorPercent)}</span><span class="unit">%</span>
         </div>
         <div class="tools">
           <a class="delete">

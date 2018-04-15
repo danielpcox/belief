@@ -1,6 +1,7 @@
 import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
+import utils from './utils';
 import card from './card'
 import state from './state'
 import config from './config'
