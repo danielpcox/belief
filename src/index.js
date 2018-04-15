@@ -1,7 +1,7 @@
 import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import uuid from 'uuid/v4'
-import network from './network'
+import state from './state'
 
 // Setup
 //
@@ -61,7 +61,9 @@ const updateProposition = (id, newProp) => {
   $("#" + id + " .probability .value").text(newProp.prob.toString() + "%");
 }
 
-
+state.setProbabilityUpdatedCallback((id, newProbability) => {
+  $("#" + id + " .probability .value").text((newProbability*100).toString() + "%");
+});
 
 // Update Connections (callback)
 //
@@ -71,21 +73,23 @@ const updateProb = function (conn, isRemoval) {
     conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
     stopDoubleclickPropagation();
 
-    // calculate new odds and apply
-    let sourceProb = propositions[conn.source.id].prob / 100
-    let oldTargetProb = propositions[conn.target.id].prob / 100
-    let oldTargetOdds = oldTargetProb / (1 - oldTargetProb)
-    let oldTargetPrior = propositions[conn.target.id].prior
-    let lrProbProj = likelihoodRatio / (likelihoodRatio + 1)
-    let combinedProb = (sourceProb * lrProbProj) + ((1 - sourceProb) * (1 - lrProbProj))
-    console.log("combinedProb", combinedProb);
-    let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
-    console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
-    let finalOdds = oldTargetOdds * combinedLikelihoodRatio
-    let finalProb = finalOdds / (finalOdds + 1)
-    console.log("finalProb", finalProb);
+    state.setConnection(conn.source.id, conn.target.id, likelihoodRatio);
 
-    updateProposition(conn.target.id, { prob: finalProb * 100, prior: oldTargetPrior });
+    //    // calculate new odds and apply
+    //    let sourceProb = propositions[conn.source.id].prob / 100
+    //    let oldTargetProb = propositions[conn.target.id].prob / 100
+    //    let oldTargetOdds = oldTargetProb / (1 - oldTargetProb)
+    //    let oldTargetPrior = propositions[conn.target.id].prior
+    //    let lrProbProj = likelihoodRatio / (likelihoodRatio + 1)
+    //    let combinedProb = (sourceProb * lrProbProj) + ((1 - sourceProb) * (1 - lrProbProj))
+    //    console.log("combinedProb", combinedProb);
+    //    let combinedLikelihoodRatio = combinedProb / (1 - combinedProb)
+    //    console.log("combinedLikelihoodRatio", combinedLikelihoodRatio);
+    //    let finalOdds = oldTargetOdds * combinedLikelihoodRatio
+    //    let finalProb = finalOdds / (finalOdds + 1)
+    //    console.log("finalProb", finalProb);
+    //
+    //    updateProposition(conn.target.id, { prob: finalProb * 100, prior: oldTargetPrior });
   }
 };
 
@@ -141,27 +145,30 @@ const stopDoubleclickPropagation = (id) => {
 
 $(document).ready(function () {
   $("#canvas").dblclick(function (e) {
-    let id = uuid();
-    let prior = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
+    let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
+    let top = e.pageY;
+    let left = e.pageX;
+    let id = state.newStatement(top, left);
+    state.setPrior(id, priorPercent / 100);
     let newCard = `
-    <div class="window" id="${id}" style="top:${e.pageY}px; left:${e.pageX}px">
+    <div class="window" id="${id}" style="top:${top}px; left:${left}px">
       <div class="dragHandle" />
       <div class="text" contenteditable="true">
         <p class="proposition">Proposition</p>
       </div>
       <p class="prior">
         <span class="label">Prior</span>
-        <span class="value">${prior}%</span>
+        <span class="value">${priorPercent}%</span>
       </p>
       <p class="probability">
         <span class="label">Probability</span>
-        <span class="value">${prior}%</span>
+        <span class="value">${priorPercent}%</span>
       </p>
       <div class="expandHandle" />
     </div>
     `
     $("#canvas").append(newCard);
-    updateProposition(id, { prob: prior, prior: prior });
+    //updateProposition(id, { prob: prior, prior: prior });
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
     rePlumb(instance);
@@ -170,4 +177,6 @@ $(document).ready(function () {
   stopDoubleclickPropagation();
 })
 
-console.log(network)
+//id1 = state.newStatement(0,0);
+//state.newStatement(1,1);
+//state.setConnection();
