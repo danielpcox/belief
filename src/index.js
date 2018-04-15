@@ -58,21 +58,6 @@ state.setProbabilityUpdatedCallback((id, newProbability) => {
   $("#" + id + " .probability .value").text((newProbability*100).toString() + "%");
 });
 
-// Update Connections (callback)
-//
-const updateProb = function (conn, isRemoval) {
-  if (!conn.getOverlay("label")) {
-    let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
-    conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
-    stopDoubleclickPropagation();
-
-    state.setConnection(conn.source.id, conn.target.id, likelihoodRatio);
-  }
-};
-
-
-
-
 // Extracted function for reapplying jsPlumb
 // TODO: This might be adding all new endpoints with every call. Is addEndpoint idempotent?
 // TODO: Getting ".each iteration failed : TypeError: Cannot read property 'force' of undefined" for each pre-existing card when rePlumb is called
@@ -81,15 +66,23 @@ const rePlumb = (instance) => {
 
     // event bindings
     instance.bind("connection", function (info, originalEvent) {
-      updateProb(info.connection);
+      let conn = info.connection;
+      if (!conn.getOverlay("label")) {
+        let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
+        conn.addOverlay(["Label", { label: likelihoodRatio.toString(), id: "label" }]);
+        stopDoubleclickPropagation();
+
+        state.setConnection(conn.source.id, conn.target.id, likelihoodRatio);
+      }
     });
     instance.bind("connectionDetached", function (info, originalEvent) {
-      updateProb(info.connection, true);
+      let conn = info.connection;
+      state.deleteConnection(conn.source.id, conn.target.id);
     });
 
-    instance.bind("click", function (component, originalEvent) {
-      console.log("Connection clicked.");
-    });
+    //    instance.bind("click", function (component, originalEvent) {
+    //      console.log("Connection clicked.");
+    //    });
 
     // make .window divs draggable
     instance.draggable(jsPlumb.getSelector(".drag-drop .window"), { handle: ".drag-drop .window .dragHandle" });
