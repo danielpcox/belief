@@ -95,6 +95,9 @@ $(document).ready(function () {
           </div>
         </div>
       </div>
+      <div class="tools">
+        <p class="delete">Delete</p>
+      </div>
       <div class="probability">
         <div class="value" style="width: ${priorPercent}%" />
       </div>
@@ -104,11 +107,25 @@ $(document).ready(function () {
     $("#canvas").append(newCard);
     //updateProposition(id, { prob: prior, prior: prior });
 
+    // Update prior probability value from range input
+    //
+    $('.prior-control input').onChange(function () {
+      alert('pop');
+      $(this).setPrior(this.id, this.value);
+      return false;
+    });
 
     // Open popovers on click of their trigger
     //
     $('.popover').click(function () {
       $(this).toggleClass('popover-open');
+      return false;
+    });
+
+    // Open popovers on click of their trigger
+    //
+    $('.tools .delete').click(function () {
+      $(this).deleteStatement(id);
       return false;
     });
 
