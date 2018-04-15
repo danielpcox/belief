@@ -109,11 +109,11 @@ $(document).ready(function () {
 
     // Update prior probability value from range input
     //
-    $('.prior-control input').onChange(function () {
-      alert('pop');
-      $(this).setPrior(this.id, this.value);
-      return false;
-    });
+    // $('.prior-control input').onChange(function () {
+    //   alert('pop');
+    //   $(this).setPrior(this.id, this.value);
+    //   return false;
+    // });
 
     // Open popovers on click of their trigger
     //
@@ -122,10 +122,11 @@ $(document).ready(function () {
       return false;
     });
 
-    // Open popovers on click of their trigger
+    // Delete item control
     //
-    $('.tools .delete').click(function () {
-      $(this).deleteStatement(id);
+    $('.tools .delete').click(function (id) {
+      instance.remove(id);
+      state.deleteStatement(id);
       return false;
     });
 
