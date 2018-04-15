@@ -55,7 +55,7 @@ const OutputEndpoint = {
 };
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
-  $("#" + id + " .probability .value").text((newProbability*100).toString() + "%");
+  $("#" + id + " .probability .value").text((newProbability * 100).toString() + "%");
 });
 
 // Update Connections (callback)
@@ -115,9 +115,9 @@ jsPlumb.ready(function () {
 // New Proposition Card Creation
 //
 const stopDoubleclickPropagation = (id) => {
-  // $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
-  //   e.stopPropagation();
-  // });
+  $(id ? `#canvas ${id}` : "#canvas *").dblclick(function (e) {
+    e.stopPropagation();
+  });
 }
 
 $(document).ready(function () {
