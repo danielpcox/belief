@@ -7,7 +7,7 @@ import config from './config'
 require('../style/app.scss');
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
-  $("#" + id + " .probability .value").text(utils.displayProbability(newProbability));
+  $("#" + id + " .probability .value").html(utils.displayProbability(newProbability));
 });
 
 // Extracted function for reapplying jsPlumb
