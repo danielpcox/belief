@@ -38,7 +38,12 @@ const rePlumb = (instance, id) => {
     let el = jsPlumb.getSelector(statementSelector);
 
     // make .window divs draggable
-    instance.draggable(el, { handle: (statementSelector + " .dragHandle") });
+    instance.draggable(el, {
+      handle: (statementSelector + " .dragHandle"),
+      stop: function (params) {
+        state.setPosition(id, params.pos[1], params.pos[0]);
+      }
+    });
 
     // add input and output endpoints.
     instance.addEndpoint(el, { anchor: "LeftMiddle" }, config.InputEndpoint);
@@ -74,6 +79,7 @@ $(document).ready(function () {
     let left = e.pageX;
     let id = state.newStatement(top, left);
     state.setPrior(id, priorPercent / 100);
+    state.setPosition(id, top, left);
     let newCard = card.createCard(id, top, left, priorPercent);
     $("#canvas").append(newCard);
     //updateProposition(id, { prob: prior, prior: prior });
@@ -96,6 +102,14 @@ $(document).ready(function () {
       $("#canvas").append(newCard);
       return false;
     });
+
+    // Power the saving/editing of location
+
+
+    // Power saving/editing the statement text
+    $(`#${id} .text`).on('input', function (e) {
+      state.setText(id, e.delegateTarget.innerHTML);
+    })
 
     // Power the prior editing capability
     $(`#${id} .prior input`).change(function () {

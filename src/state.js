@@ -7,14 +7,14 @@ let probabilityUpdatedCallback = Function.prototype; // callback function to cal
 
 const recalculateProbabilitiesFrom = (id) => {
   let priorOdds = statements[id].prior / (1 - statements[id].prior)
-  let incomingLRsandProbs = _.map(Array.from(statements[id].contributions),(cid) => ({lr:connections[cid][id],prob:statements[cid].probability}))
-  let contributions = _.map(incomingLRsandProbs,(contrib) => {
+  let incomingLRsandProbs = _.map(Array.from(statements[id].contributions), (cid) => ({ lr: connections[cid][id], prob: statements[cid].probability }))
+  let contributions = _.map(incomingLRsandProbs, (contrib) => {
     let lrProbProj = contrib.lr / (contrib.lr + 1)
     let combinedProb = (contrib.prob * lrProbProj) + ((1 - contrib.prob) * (1 - lrProbProj))
     let combinedLR = combinedProb / (1 - combinedProb)
     return combinedLR;
   });
-  let combinedContributions = _.reduce(contributions,(a,b) => a*b, 1);
+  let combinedContributions = _.reduce(contributions, (a, b) => a * b, 1);
   let posteriorOdds = priorOdds * combinedContributions;
   let posteriorProbability = posteriorOdds / (1 + posteriorOdds)
   statements[id].probability = posteriorProbability;
@@ -23,7 +23,7 @@ const recalculateProbabilitiesFrom = (id) => {
   probabilityUpdatedCallback(id, posteriorProbability);
 
   // update contributions to all downstream and recurse
-  _.each(connections[id], (lr,targetId) => {
+  _.each(connections[id], (lr, targetId) => {
     recalculateProbabilitiesFrom(targetId);
   });
 
@@ -32,7 +32,7 @@ const recalculateProbabilitiesFrom = (id) => {
 export default {
 
   newStatement: (top, left) => {
-    let id = 'uuid'+uuid();
+    let id = 'uuid' + uuid();
     statements[id] = {
       position: {
         top: top,
