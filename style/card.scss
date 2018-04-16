@@ -1,50 +1,50 @@
 /* Propositions */
 
 
-.window {
-  --window-vertical-padding: var(--spacing-base);
-  --window-horizontal-padding: calc(1.5 * var(--spacing-base));
+.card {
+  --card-vertical-padding: var(--spacing-base);
+  --card-horizontal-padding: calc(1.5 * var(--spacing-base));
 
-  background-color: var(--color-window-background-hsla);
+  background-color: var(--color-card-background-hsla);
   box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
   border-radius: var(--border-radius-base);
-  padding: var(--window-vertical-padding) var(--window-horizontal-padding);
+  padding: var(--card-vertical-padding) var(--card-horizontal-padding);
   width: calc(18 * var(--spacing-base));
   min-height: calc(15 * var(--spacing-base));
   transition: var(--transition-base);
   transition-property: color, background-color, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
-  z-index: var(--z-index-window-base);
+  z-index: var(--z-index-card-base);
   position: absolute;
   line-height: 1.4;
   display: flex;
   flex-direction: column;
 }
 
-.window:hover {
-  z-index: calc(var(--z-index-window-base) + 10);
+.card:hover {
+  z-index: calc(var(--z-index-card-base) + 10);
 }
 
 /* Scrolling area spacing element */
-.window:after {
-  --window-scrolling-spacing-size: calc(var(--spacing-base) * -5);
+.card:after {
+  --card-scrolling-spacing-size: calc(var(--spacing-base) * -5);
 
   content: '';
   position: absolute;
   pointer-events: none;
-  top: var(--window-scrolling-spacing-size);
-  bottom: var(--window-scrolling-spacing-size);
-  left: var(--window-scrolling-spacing-size);
-  right: var(--window-scrolling-spacing-size);
+  top: var(--card-scrolling-spacing-size);
+  bottom: var(--card-scrolling-spacing-size);
+  left: var(--card-scrolling-spacing-size);
+  right: var(--card-scrolling-spacing-size);
   z-index: -20;
 }
 /* Hover area spacing element */
-.window:before {
-  --window-hover-spacing-size: calc(var(--spacing-base) * -3);
+.card:before {
+  --card-hover-spacing-size: calc(var(--spacing-base) * -3);
 
   content: '';
   position: absolute;
-  top: var(--window-hover-spacing-size);
-  bottom: var(--window-hover-spacing-size);
+  top: var(--card-hover-spacing-size);
+  bottom: var(--card-hover-spacing-size);
   left: 0;
   right: 0;
   z-index: -10;
@@ -54,8 +54,8 @@
 .text {
   font-weight: bold;
   line-height: 1.2;
-  margin: 0 calc(var(--window-horizontal-padding) * -1) auto;
-  padding: 0 var(--window-horizontal-padding) var(--spacing-base);
+  margin: 0 calc(var(--card-horizontal-padding) * -1) auto;
+  padding: 0 var(--card-horizontal-padding) var(--spacing-base);
   transition: all var(--transition-base-duration-and-timing);
   cursor: text;
 
@@ -146,7 +146,7 @@
 
 
 /* Drag Handle */
-.window .dragHandle { 
+.card .dragHandle { 
   position: absolute;
   top: calc(var(--spacing-base) * -1.5);
   width: 20%;
@@ -162,10 +162,10 @@
   -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
 }
 
-.window:hover .dragHandle {
+.card:hover .dragHandle {
   opacity: 1;
 }
-.window:hover .dragHandle:after {
+.card:hover .dragHandle:after {
   position: absolute;
   top: calc(var(--spacing-base) * -4);
   right: calc(var(--spacing-base) * -3);
@@ -248,7 +248,7 @@
     }
   }
 
-  .window:hover & {
+  .card:hover & {
     opacity: 0.3;
 
     &:hover {

@@ -37,7 +37,7 @@ const rePlumb = (instance, id) => {
     let statementSelector = `#${id}`;
     let el = jsPlumb.getSelector(statementSelector);
 
-    // make .window divs draggable
+    // make .card divs draggable
     instance.draggable(el, {
       handle: (statementSelector + " .dragHandle"),
       stop: function (params) {
@@ -88,7 +88,7 @@ $(document).ready(function () {
     $(`#${id} .createFollowingHandle`).click(function () {
       // Get the current statement ID
       let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
-      let oldStatement = $(this).parents('.window').attr('id');
+      let oldStatement = $(this).parents('.card').attr('id');
       let newTop = oldStatement.top;
       let newLeft = oldStatement.left + 100;
       let newStatementId = state.newStatement(newTop, newLeft);

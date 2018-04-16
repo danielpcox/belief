@@ -5,7 +5,7 @@ export default {
   //
   createCard: (id, top, left, priorPercent) => {
     let newCard = `
-      <div class="window" id="${id}" style="top:${top}px; left:${left}px">
+      <div class="statement card" id="${id}" style="top:${top}px; left:${left}px">
         <div class="dragHandle" />
         <p class="text" contenteditable="true">Statement</p>
         <label class="prior">

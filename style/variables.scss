@@ -21,12 +21,12 @@
 
 
 /* Specific Colors */
-  --color-window-background-h: 0;
-  --color-window-background-s: 0%;
-  --color-window-background-l: 100%;
-  --color-window-background-a: 1;
-  --color-window-background-hsla: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), var(--color-window-background-a));
-  --color-window-background-hsla-hover: hsla(var(--color-window-background-h), var(--color-window-background-s), var(--color-window-background-l), calc(var(--color-window-background-a) * 0.6));
+  --color-card-background-h: 0;
+  --color-card-background-s: 0%;
+  --color-card-background-l: 100%;
+  --color-card-background-a: 1;
+  --color-card-background-hsla: hsla(var(--color-card-background-h), var(--color-card-background-s), var(--color-card-background-l), var(--color-card-background-a));
+  --color-card-background-hsla-hover: hsla(var(--color-card-background-h), var(--color-card-background-s), var(--color-card-background-l), calc(var(--color-card-background-a) * 0.6));
 
 /* Typography * Layout */
   --font-family-base: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
@@ -34,7 +34,7 @@
   --font-size-base: 14px;
   --font-size-sm: 10px;
   --spacing-base: 8px;
-  --z-index-window-base: 24;
+  --z-index-card-base: 24;
   
 /* Decorations */
   --shadow-blur: 0px;

@@ -23,7 +23,7 @@ module.exports = {
 module.loaders = {
   test: require.resolve('jsPlumb'),
   loaders: [
-    'imports?this=>window',
+    'imports?this=>card',
     'script'
   ]
 };
