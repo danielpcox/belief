@@ -4,10 +4,11 @@ import _ from 'lodash'
 let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statement", prior:0.5, contributions:['uuid1','uuid2'], probability:0.5} }
 let connections = {}; // e.g. {'uuid1': {'uuid2': 3.0}}
 let probabilityUpdatedCallback = Function.prototype; // callback function to call with id of updated probability and new probability
+let onLoadCallback = Function.prototype;
 
 const recalculateProbabilitiesFrom = (id) => {
   let priorOdds = statements[id].prior / (1 - statements[id].prior)
-  let incomingLRsandProbs = _.map(Array.from(statements[id].contributions), (cid) => ({ lr: connections[cid][id], prob: statements[cid].probability }))
+  let incomingLRsandProbs = _.map(statements[id].contributions, (cid) => ({ lr: connections[cid][id], prob: statements[cid].probability }))
   let contributions = _.map(incomingLRsandProbs, (contrib) => {
     let lrProbProj = contrib.lr / (contrib.lr + 1)
     let combinedProb = (contrib.prob * lrProbProj) + ((1 - contrib.prob) * (1 - lrProbProj))
@@ -40,7 +41,7 @@ export default {
       },
       text: "Statement",
       prior: 0.5,
-      contributions: new Set(),
+      contributions: [],
       probability: 0.5 // Note that you don't set the probability directly. It is calculated from connections.
     };
     return id;
@@ -59,9 +60,10 @@ export default {
 
   setConnection: (sourceId, targetId, lr) => {
     _.set(connections, [sourceId, targetId], lr);
-    statements[targetId].contributions.add(sourceId);
+    let s = new Set(statements[targetId].contributions);
+    let sWithSource = s.add(sourceId);
+    statements[targetId].contributions = Array.from(sWithSource);
     recalculateProbabilitiesFrom(sourceId);
-
   },
 
   setPosition: (id, top, left) => {
@@ -96,8 +98,39 @@ export default {
     probabilityUpdatedCallback = cb;
   },
 
-  // TODO
-  // save
-  // load
+  save: () => {
+    let exportName = "beliefs";
+    let exportObj = {
+      statements: statements,
+      connections: connections
+    };
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    let downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  },
+
+  onLoad: (cb) => {
+    onLoadCallback = cb;
+  },
+
+  load: (e) => {
+    let file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      let contents = e.target.result;
+      let loaded = JSON.parse(contents);
+      console.log("Loaded save file: ",loaded)
+      statements = loaded.statements;
+      connections = loaded.connections;
+      onLoadCallback(statements, connections);
+    };
+    reader.readAsText(file);
+  }
 
 };

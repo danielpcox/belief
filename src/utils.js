@@ -8,8 +8,6 @@ export default {
     let readableProb = '';
     let unit = '';
 
-    console.log(style);
-
     switch (style) {
       case 'odds':
         let numerator = '1';

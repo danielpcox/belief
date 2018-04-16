@@ -3,10 +3,12 @@ export default {
 
   // New Proposition Card Creation
   //
-  createCard: (id, top, left, priorPercent) => {
+  createCard: (id, top, left, priorPercent, loadedText, loadedProbability) => {
+    let text = loadedText ? loadedText : "Statement";
+    let probability = loadedProbability ? loadedProbability : (priorPercent / 100);
     let newCard = `
       <div class="statement card" id="${id}" style="top:${top}px; left:${left}px">
-        <p class="text" contenteditable="true">Statement</p>
+        <p class="text" contenteditable="true">${text}</p>
         <label class="prior">
           <label class="label" for="${id}-prior-input">Prior</label>
           <input
@@ -38,7 +40,7 @@ export default {
           </div>
         </label>
         <div class="probability">
-          <span>Probability</span><span class="value">${utils.displayProbability(priorPercent / 100)}</span><span class="unit">%</span>
+          <span>Probability</span><span class="value">${utils.displayProbability(probability)}</span><span class="unit">%</span>
         </div>
         <div class="tools">
           <div class="drag-handle" />
