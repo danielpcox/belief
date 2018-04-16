@@ -1,39 +1,11 @@
 /* Cards */
 
-// Style Shortcuts
-@mixin style-for-hidden-drag-handle {
-  position: absolute;
-  top: calc(var(--spacing-base) * -1.5);
-  width: 20%;
-  border-radius: 100px;
-  background-color: rgba(0,0,0,.2);
-  height: calc(var(--spacing-base) * .5);
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: grab;
-  pointer-events: auto;
-  opacity: 0;
-  transition: var(--transition-base);
-  -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
-}
-
-@mixin style-for-visible-drag-handle {
-  opacity: 1;
-
-  &:after {
-    position: absolute;
-    top: calc(var(--spacing-base) * -4);
-    right: calc(var(--spacing-base) * -3);
-    left: calc(var(--spacing-base) * -3);
-    bottom: calc(var(--spacing-base) * -1);
-    content: '';
-  }
+:root {
+  --card-tools-hover-persistence-duration: 35s;
+  --card-control-base-opacity: 0.2;
 }
 
 @mixin style-for-dragging-drag-handle {
-  cursor: grabbing;
-  background-color: rgba(0,0,0,.5);
-  transition-duration: 0;
 }
 
 
@@ -182,92 +154,128 @@
       margin-left: auto;
     }
   }
-
-  .dragHandle {
-    @include style-for-hidden-drag-handle();
-  }
-
-  &:hover .dragHandle {
-    @include style-for-visible-drag-handle();
-  }
 }
 
-.jtk-dragged .dragHandle,
-.jtk-draggable .dragHandle:active {
-  @include style-for-dragging-drag-handle();
-}
+// Contextual card tools
+// Drag handle, delete button, etc.
+// These disappear on mouseout, for the most part.
+.card {
 
-.tools {
-  position: absolute;
-  top: calc((var(--spacing-base) * -1.5));
-  transform: translateY(100%);
-  right: 0;
-  // margin-top: var(--spacing-base);
-  font-size: var(--font-size-sm);
-  font-weight: bold;
-  opacity: 0;
-
-  .delete {
-    --thickness: calc(var(--spacing-base) * .25);
-    --size: calc(var(--spacing-base) * 1.5);
-
-    width: var(--size);
-    height: var(--size);
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: var(--color-intent-danger);
-    cursor: pointer;
-    overflow: visible;
-
-    .label {
-      position: absolute;
-      pointer-events: none;
-      z-index: -100;
-      visibility: hidden;
+  &:hover {
+    .tools {
+      opacity: 1;
+      z-index: 100000;
     }
+  }
 
-    .close-bars {
+  .tools {
+    position: absolute;
+    top: calc(var(--spacing-base) * -1.5);
+    transition: all var(--transition-base-duration-and-timing);
+    z-index: 0;
+    opacity: 0;
+    right: 0;
+    left: 0;
+
+    .drag-handle {
       position: absolute;
       top: 0;
-      right: 0;
-      width: var(--size);
-      height: var(--size);
-      overflow: visible;
+      width: 20%;
+      border-radius: 100px;
+      background-color: var(--color-content);
+      height: calc(var(--spacing-base) * .5);
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: grab;
+      pointer-events: auto;
+      opacity: var(--card-control-base-opacity);
       transition: var(--transition-base);
+      -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
 
-      .close-bar {
+      &:after {
         position: absolute;
-        top: 0;
-        height: var(--thickness);
-        width: var(--size);
-        background-color: black;
-        border-radius: var(--thickness);
-        transform: rotate(45deg);
-        transform-origin: center center;
-        transition: inherit;
-        margin: 0 auto;
+        top: calc(var(--spacing-base) * -4);
+        right: calc(var(--spacing-base) * -3);
+        left: calc(var(--spacing-base) * -3);
+        bottom: calc(var(--spacing-base) * -1);
+        content: '';
+      }
 
-        &:first-child {
-          transform: rotate(-45deg);
+      &:hover {
+        width: 25%;
+      }
+
+      &:active {
+        cursor: grabbing;
+        opacity: 0.5;
+        transition-duration: 0;
+      }
+    }
+
+    .delete {
+      --thickness: calc(var(--spacing-base) * .3);
+      --size: calc(var(--spacing-base) * 1.5);
+
+      position: absolute;
+      top: 0;
+      right: var(--spacing-base);
+      color: var(--color-intent-danger);
+      appearance: none;
+      padding: 0;
+      border: 0;
+      opacity: var(--card-control-base-opacity);
+      cursor: pointer;
+      transform: translateX(-50%) translateY(calc(var(--thickness) * -1));
+      transform-origin: center center;
+
+      &:after {
+        // Create a more convenient mouse target for the button
+        width: 1.3em;
+        height: 1.3em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        content: '';
+      }
+      
+      .label {
+        position: absolute;
+        pointer-events: none;
+        z-index: -100;
+        visibility: hidden;
+      }
+      
+      .close-bars {
+        overflow: visible;
+        transition: var(--transition-base);
+
+        .close-bar {
+          position: absolute;
+          top: 0;
+          height: var(--thickness);
+          width: var(--size);
+          background-color: black;
+          border-radius: var(--thickness);
+          transform: translateX(-50%) rotate(45deg);
+          transform-origin: center center;
+          transition: inherit;
+
+          &:first-child {
+            transform:  translateX(-50%) rotate(-45deg);
+          }
         }
       }
-    }
 
-    &:hover {
+      &:hover {
+        --size: calc(var(--spacing-base) * 2);
 
-      .close-bar {
-        background-color: var(--color-intent-danger);
+        opacity: 1;
+
+        .close-bar {
+          background-color: var(--color-intent-danger);
+        }
       }
-    }
-  }
-
-  .card:hover & {
-    opacity: 0.3;
-    transform: translateY(0);
-
-    &:hover {
-      opacity: 1;
     }
   }
 }

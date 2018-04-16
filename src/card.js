@@ -6,7 +6,6 @@ export default {
   createCard: (id, top, left, priorPercent) => {
     let newCard = `
       <div class="statement card" id="${id}" style="top:${top}px; left:${left}px">
-        <div class="dragHandle" />
         <p class="text" contenteditable="true">Statement</p>
         <label class="prior">
           <label class="label" for="${id}-prior-input">Prior</label>
@@ -42,13 +41,14 @@ export default {
           <span>Probability</span><span class="value">${utils.displayProbability(priorPercent / 100)}</span><span class="unit">%</span>
         </div>
         <div class="tools">
-          <a class="delete">
+          <div class="drag-handle" />
+          <button class="delete">
             <div class="close-bars">
               <div class="close-bar" />
               <div class="close-bar" />
             </div>
             <span class="label">Delete</span>
-          </a>
+          </button>
         </div>
         <!--<a class="createFollowingHandle">
           <p>Create following statement</p>
@@ -56,7 +56,6 @@ export default {
         <!--<a class="createPrecedingHandle">
           <p>Create preceding statement</p>
         </a>-->
-        <!--<div class="expandHandle" />-->
       </div>
     `;
     return newCard;

@@ -39,7 +39,7 @@ const rePlumb = (instance, id) => {
 
     // make .card divs draggable
     instance.draggable(el, {
-      handle: (statementSelector + " .dragHandle"),
+      handle: (statementSelector + " .drag-handle"),
       stop: function (params) {
         state.setPosition(id, params.pos[1], params.pos[0]);
       }
@@ -110,16 +110,19 @@ $(document).ready(function () {
 
     // Power the prior editing capability
     $(`#${id} .prior input`).change(function () {
-      state.setPrior(id, (this.value / 100));
+      let statement = $(this).parents('.window').attr('id');
+
+      state.setPrior(statement, (this.value / 100));
       return false;
     });
 
     // Power the delete item control
     $(`#${id} .tools .delete`).click(function (id) {
-      if (state.exists(id)) {
-        instance.remove(id);
-        state.deleteStatement(id);
-        rePlumb(instance, id);
+      let statementId = $(this).parents('.card').attr('id');
+      if (state.exists(statementId)) {
+        instance.remove(statementId);
+        state.deleteStatement(statementId);
+        rePlumb(instance, statementId);
       }
     });
 
