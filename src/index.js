@@ -103,9 +103,6 @@ $(document).ready(function () {
       return false;
     });
 
-    // Power the saving/editing of location
-
-
     // Power saving/editing the statement text
     $(`#${id} .text`).on('input', function (e) {
       state.setText(id, e.delegateTarget.innerHTML);
@@ -113,20 +110,16 @@ $(document).ready(function () {
 
     // Power the prior editing capability
     $(`#${id} .prior input`).change(function () {
-      let statement = $(this).parents('.window').attr('id');
-
-      state.setPrior(statement, (this.value / 100));
+      state.setPrior(id, (this.value / 100));
       return false;
     });
 
     // Power the delete item control
     $(`#${id} .tools .delete`).click(function (id) {
-      let statementId = $(this).parents('.window').attr('id');
-
-      if (state.exists(statementId)) {
-        instance.remove(statementId);
-        state.deleteStatement(statementId);
-        rePlumb(instance, statementId);
+      if (state.exists(id)) {
+        instance.remove(id);
+        state.deleteStatement(id);
+        rePlumb(instance, id);
       }
     });
 
