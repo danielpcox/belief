@@ -129,4 +129,15 @@ $(document).ready(function () {
   });
 
   stopDoubleclickPropagation();
+
+  $('#file-input').change(state.load);
+  $('#save').click(state.save);
+
+  state.onLoad((statements, connections) => {
+    console.log(statements);
+    _.each(_.keys(statements), (id) => {
+      let newCard = card.createCard(id, statements[id].position.top, statements[id].position.left, statements[id].prior * 100, statements[id].text, statements[id].probability);
+      $("#canvas").append(newCard);
+    });
+  });
 });
