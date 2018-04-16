@@ -44,3 +44,16 @@ body {
   -ms-user-select: none;
   user-select: none;    
 }
+
+.page-tools {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: var(--spacing-base);
+
+  button {
+    & + & {
+      margin-left: var(--spacing-base);
+    }
+  }
+}

@@ -1,4 +1,41 @@
-/* Propositions */
+/* Cards */
+
+// Style Shortcuts
+@mixin style-for-hidden-drag-handle {
+  position: absolute;
+  top: calc(var(--spacing-base) * -1.5);
+  width: 20%;
+  border-radius: 100px;
+  background-color: rgba(0,0,0,.2);
+  height: calc(var(--spacing-base) * .5);
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: grab;
+  pointer-events: auto;
+  opacity: 0;
+  transition: var(--transition-base);
+  -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
+}
+
+@mixin style-for-visible-drag-handle {
+  opacity: 1;
+
+  &:after {
+    position: absolute;
+    top: calc(var(--spacing-base) * -4);
+    right: calc(var(--spacing-base) * -3);
+    left: calc(var(--spacing-base) * -3);
+    bottom: calc(var(--spacing-base) * -1);
+    content: '';
+  }
+}
+
+@mixin style-for-dragging-drag-handle {
+  cursor: grabbing;
+  background-color: rgba(0,0,0,.5);
+  transition-duration: 0;
+}
+
 
 
 .card {
@@ -18,175 +55,152 @@
   line-height: 1.4;
   display: flex;
   flex-direction: column;
-}
-
-.card:hover {
-  z-index: calc(var(--z-index-card-base) + 10);
-}
-
-/* Scrolling area spacing element */
-.card:after {
-  --card-scrolling-spacing-size: calc(var(--spacing-base) * -5);
-
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  top: var(--card-scrolling-spacing-size);
-  bottom: var(--card-scrolling-spacing-size);
-  left: var(--card-scrolling-spacing-size);
-  right: var(--card-scrolling-spacing-size);
-  z-index: -20;
-}
-/* Hover area spacing element */
-.card:before {
-  --card-hover-spacing-size: calc(var(--spacing-base) * -3);
-
-  content: '';
-  position: absolute;
-  top: var(--card-hover-spacing-size);
-  bottom: var(--card-hover-spacing-size);
-  left: 0;
-  right: 0;
-  z-index: -10;
-  border-radius: 20px;
-}
-
-.text {
-  font-weight: bold;
-  line-height: 1.2;
-  margin: 0 calc(var(--card-horizontal-padding) * -1) auto;
-  padding: 0 var(--card-horizontal-padding) var(--spacing-base);
-  transition: all var(--transition-base-duration-and-timing);
-  cursor: text;
 
   &:hover {
-    color: var(--color-intent-interaction);
+    z-index: calc(var(--z-index-card-base) + 10);
   }
 
-  &:focus {
-    color: var(--color-intent-interaction);
-    outline: none;
-  }
-}
+  &:after {
+    /* Scrolling area spacing element */
+    .card:after {
+      --card-scrolling-spacing-size: calc(var(--spacing-base) * -5);
 
-.prior,
-.probability {
-  margin: 0;
-}
-
-
-.label {
-  flex: 1 1 100%;
-}
-.ratio {
-  word-spacing: 0;
-  white-space: nowrap;
-}
-.ratio .n {}
-.ratio .d {}
-.ratio .d:before {
-  content: ':'
-}
-
-.prior {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  font-size: var(--font-size-sm);
-  border-bottom: 1px solid rgba(0,0,0,.1);
-
-  .label {
-    flex: 1 1 auto;
-  }
-
-  input {
-    flex: 1 1 100%;
-    width: 3em;
-    border: 0;
-    appearance: none;
-    -webkit-appearance: none;
-    text-align: right;
-    font-weight: inherit;
-
-    &:invalid {
-      border: 1px solid var(--color-intent-danger);
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      top: var(--card-scrolling-spacing-size);
+      bottom: var(--card-scrolling-spacing-size);
+      left: var(--card-scrolling-spacing-size);
+      right: var(--card-scrolling-spacing-size);
+      z-index: -20;
     }
+  }
+
+  /* Hover area spacing element */
+  &:before {
+    --card-hover-spacing-size: calc(var(--spacing-base) * -3);
+
+    content: '';
+    position: absolute;
+    top: var(--card-hover-spacing-size);
+    bottom: var(--card-hover-spacing-size);
+    left: 0;
+    right: 0;
+    z-index: -10;
+    border-radius: 20px;
+  }
+
+  .text {
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0 calc(var(--card-horizontal-padding) * -1) auto;
+    padding: 0 var(--card-horizontal-padding) var(--spacing-base);
+    transition: all var(--transition-base-duration-and-timing);
+    cursor: text;
 
     &:hover {
       color: var(--color-intent-interaction);
     }
 
     &:focus {
-      outline: none;
       color: var(--color-intent-interaction);
+      outline: none;
     }
   }
 
-  &:hover input {
-    color: var(--color-intent-interaction);
+  .prior,
+  .probability {
+    margin: 0;
   }
 
-  .unit {
-    flex: 0 0 auto;
+
+  .label {
+    flex: 1 1 100%;
+  }
+  .ratio {
+    word-spacing: 0;
+    white-space: nowrap;
+  }
+  .ratio .n {}
+  .ratio .d {}
+  .ratio .d:before {
+    content: ':'
   }
 
-  .popover {
-    display: none;
+  .prior {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: var(--font-size-sm);
+    border-bottom: 1px solid rgba(0,0,0,.1);
+
+    .label {
+      flex: 1 1 auto;
+    }
+
+    input {
+      flex: 1 1 100%;
+      width: 3em;
+      border: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      text-align: right;
+      font-weight: inherit;
+
+      &:invalid {
+        border: 1px solid var(--color-intent-danger);
+      }
+
+      &:hover {
+        color: var(--color-intent-interaction);
+      }
+
+      &:focus {
+        outline: none;
+        color: var(--color-intent-interaction);
+      }
+    }
+
+    &:hover input {
+      color: var(--color-intent-interaction);
+    }
+
+    .unit {
+      flex: 0 0 auto;
+    }
+
+    .popover {
+      display: none;
+    }
   }
-}
 
-.probability {
-  text-align: right;
-  display: flex;
+  .probability {
+    text-align: right;
+    display: flex;
 
-  .value {
-    margin-left: auto;
+    .value {
+      margin-left: auto;
+    }
   }
-}
 
+  .dragHandle {
+    @include style-for-hidden-drag-handle();
+  }
 
-/* Drag Handle */
-.card .dragHandle { 
-  position: absolute;
-  top: calc(var(--spacing-base) * -1.5);
-  width: 20%;
-  border-radius: 100px;
-  background-color: rgba(0,0,0,.2);
-  height: calc(var(--spacing-base) * .5);
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: grab;
-  pointer-events: auto;
-  opacity: 0;
-  transition: var(--transition-base);
-  -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
-}
-
-.card:hover .dragHandle {
-  opacity: 1;
-}
-.card:hover .dragHandle:after {
-  position: absolute;
-  top: calc(var(--spacing-base) * -4);
-  right: calc(var(--spacing-base) * -3);
-  left: calc(var(--spacing-base) * -3);
-  bottom: calc(var(--spacing-base) * -1);
-  content: '';
-}
-.draggable .dragHandle {
-  cursor: grab;
+  &:hover .dragHandle {
+    @include style-for-visible-drag-handle();
+  }
 }
 
 .jtk-dragged .dragHandle,
 .jtk-draggable .dragHandle:active {
-  cursor: grabbing;
-  background-color: rgba(0,0,0,.5);
-  transition-duration: 0;
+  @include style-for-dragging-drag-handle();
 }
 
 .tools {
   position: absolute;
   top: calc((var(--spacing-base) * -1.5));
+  transform: translateY(100%);
   right: 0;
   // margin-top: var(--spacing-base);
   font-size: var(--font-size-sm);
@@ -250,6 +264,7 @@
 
   .card:hover & {
     opacity: 0.3;
+    transform: translateY(0);
 
     &:hover {
       opacity: 1;
