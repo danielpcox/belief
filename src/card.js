@@ -4,7 +4,7 @@ export default {
   // New Proposition Card Creation
   //
   createCard: (id, top, left, priorPercent, loadedText, loadedProbability) => {
-    let text = loadedText ? loadedText : "Statement";
+    let text = loadedText ? loadedText : "";
     let probability = loadedProbability ? loadedProbability : (priorPercent / 100);
     let newCard = `
       <div class="statement card" id="${id}" style="top:${top}px; left:${left}px">
