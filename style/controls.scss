@@ -2,16 +2,32 @@
 
 // Buttons
 button {
-  border-radius: var(--border-radius-base);
-  border-width: 0;
   appearance: none;
-  background-color: var(--color-white);
-  font-weight: bold;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
 }
 
-label {
-  font-size: var(--font-size-sm);
+.button {
+  border-radius: var(--border-radius-base);
+  border-width: 0;
+  background-color: var(--color-white);
+  font-weight: bold;
+  padding: calc(var(--spacing-base) * 0.75) var(--spacing-base);
+  display: inline-block;
+  color: var(--color-intent-interaction);
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
+
+// Form Labels
+label { }
 
 .control-slider { }
 

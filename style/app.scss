@@ -50,10 +50,11 @@ body {
   top: 0;
   right: 0;
   padding: var(--spacing-base);
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  display: flex;
 
-  button {
-    & + & {
-      margin-left: var(--spacing-base);
-    }
-  }
+   * + * {
+     margin-left: var(--spacing-base);
+   }
 }
