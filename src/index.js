@@ -113,9 +113,7 @@ $(document).ready(function () {
 
     // Power the prior editing capability
     $(`#${id} .prior input`).change(function () {
-      let statement = $(this).parents('.window').attr('id');
-
-      state.setPrior(statement, (this.value / 100));
+      state.setPrior(id, (this.value / 100));
       return false;
     });
 
@@ -192,7 +190,7 @@ $(document).ready(function () {
 
       /////////EWWWWW COPIED IN FROM ABOVE. REFACTOR THIS. ^^^^^^^^
     });
-    _.each(_.keys(connections),(id) => {
+    _.each(_.keys(connections), (id) => {
       _.each(connections[id], (lr, targetId) => {
         let conn = instance.connect({
           source: id,
