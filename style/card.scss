@@ -23,6 +23,7 @@
   transition: var(--transition-base);
   transition-property: color, background-color, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
   z-index: var(--z-index-card-base);
+  border: 2px solid transparent;
   position: absolute;
   line-height: 1.4;
   display: flex;
@@ -60,6 +61,10 @@
     right: 0;
     z-index: -10;
     border-radius: 20px;
+  }
+
+  &.selected {
+    border-color: var(--color-intent-interaction);
   }
 
   .text {
@@ -170,27 +175,43 @@
 
   .tools {
     position: absolute;
-    top: calc(var(--spacing-base) * -1.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: calc(var(--spacing-base) * -2.5);
+    height: calc(var(--spacing-base) * 2);
     transition: all var(--transition-base-duration-and-timing);
     z-index: 0;
     opacity: 0;
     right: 0;
     left: 0;
 
+    .select {
+      position: relative;
+      font-weight: bold;
+      padding: 0;
+      flex: 0 0 16px;
+      top: -1px;
+      opacity: var(--card-control-base-opacity);
+      transition: all var(--transition-base-duration-and-timing);
+
+      &:hover,
+      &.checked {
+        opacity: 1;
+      }
+    }
+
     .drag-handle {
-      position: absolute;
-      top: 0;
-      width: 20%;
+      flex: 0 0 20%;
       border-radius: 100px;
       background-color: var(--color-content);
       height: calc(var(--spacing-base) * .5);
-      left: 50%;
-      transform: translateX(-50%);
       cursor: grab;
       pointer-events: auto;
       opacity: var(--card-control-base-opacity);
       transition: var(--transition-base);
       -webkit-backdrop-filter: blur(calc(var(--spacing-base) * .5));
+      position: relative;
 
       &:after {
         position: absolute;
@@ -202,7 +223,7 @@
       }
 
       &:hover {
-        width: 25%;
+        flex-basis: 25%;
       }
 
       &:active {
@@ -215,17 +236,18 @@
     .delete {
       --thickness: calc(var(--spacing-base) * .3);
       --size: calc(var(--spacing-base) * 1.5);
+      --control-size: calc(var(--spacing-base) * 2);
 
-      position: absolute;
-      top: 0;
-      right: var(--spacing-base);
+      flex: 0 0 var(--control-size);
+      height: var(--control-size);
       color: var(--color-intent-danger);
       appearance: none;
       padding: 0;
       border: 0;
       opacity: var(--card-control-base-opacity);
       cursor: pointer;
-      transform: translateX(-50%) translateY(calc(var(--thickness) * -1));
+      position: relative;
+      transform: translateY(calc(var(--thickness) * -1));
       transform-origin: center center;
 
       &:after {
@@ -235,7 +257,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translateX(-50%) translateY(-50%);
+        transform: translateY(-50%);
         content: '';
       }
       
@@ -249,6 +271,7 @@
       .close-bars {
         overflow: visible;
         transition: var(--transition-base);
+        transform: translateX(50%);
 
         .close-bar {
           position: absolute;

@@ -5,6 +5,7 @@ let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statem
 let connections = {}; // e.g. {'uuid1': {'uuid2': 3.0}}
 let probabilityUpdatedCallback = Function.prototype; // callback function to call with id of updated probability and new probability
 let onLoadCallback = Function.prototype;
+let userSelection = [] // e.g., { 'uuid1', 'uuid2' };
 
 const recalculateProbabilitiesFrom = (id) => {
   let priorOdds = statements[id].prior / (1 - statements[id].prior)
@@ -42,7 +43,8 @@ export default {
       text: "Statement",
       prior: 0.5,
       contributions: [],
-      probability: 0.5 // Note that you don't set the probability directly. It is calculated from connections.
+      probability: 0.5, // Note that you don't set the probability directly. It is calculated from connections.
+      selected: false,
     };
     return id;
   },
@@ -72,7 +74,6 @@ export default {
       left: left
     };
   },
-
 
   deleteStatement: (id) => {
     // remove id from statements
@@ -106,7 +107,7 @@ export default {
     };
     let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
     let downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", exportName + ".json");
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -122,15 +123,26 @@ export default {
       return;
     }
     let reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       let contents = e.target.result;
       let loaded = JSON.parse(contents);
-      console.log("Loaded save file: ",loaded)
+      console.log("Loaded save file: ", loaded)
       statements = loaded.statements;
       connections = loaded.connections;
       onLoadCallback(statements, connections);
     };
     reader.readAsText(file);
-  }
+  },
+
+  toggleSelected: (id) => {
+    if (statements[id].selected == false) {
+      statements[id].selected = true;
+      userSelection.push(id);
+    } else {
+      statements[id].selected = false;
+      let idToRemove = userSelection.indexOf(id);
+      userSelection.splice(idToRemove, 1);
+    };
+  },
 
 };

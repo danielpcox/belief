@@ -5,6 +5,7 @@ button {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
+  background: none;
   margin: 0;
   border: 0;
   padding: 0;
@@ -64,6 +65,59 @@ label { }
       left: 80%;
       right: 0;
       text-align: right;
+    }
+  }
+}
+
+.select {
+  height: calc(var(--spacing-base) * 2);
+  color: var(--color-content);
+  position: relative;
+
+  &:after {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .select-box {
+    stroke: currentColor;
+    fill: none;
+  }
+  .select-check {
+    stroke: currentColor;
+    fill: none;
+    stroke-dasharray: 0, 16;
+    stroke-dashoffset: 100%;
+  }
+
+  &:hover {
+    color: var(--color-intent-interaction);
+
+    .select-box { }
+    .select-check {
+      stroke-dashoffset: 0%;
+      stroke-dasharray: 16, 16;
+    }
+  }
+
+  .card.selected & {
+
+    &:hover {
+      color: var(--color-intent-interaction);
+    }
+
+    .select-box {
+      fill: currentColor;
+      stroke: currentColor;
+    }
+    .select-check {
+      stroke: #ffffff;
+      stroke-dashoffset: 0%;
+      stroke-dasharray: 16, 16;
     }
   }
 }

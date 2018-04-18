@@ -129,6 +129,13 @@ $(document).ready(function () {
       }
     });
 
+    // Power the card selection control
+    $(`#${id} .tools .select`).click(function (id) {
+      let statementId = $(this).parents('.card').attr('id');
+      state.toggleSelected(statementId);
+      $(this).parents('.card').toggleClass('selected');
+    });
+
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
     rePlumb(instance, id);
@@ -192,7 +199,7 @@ $(document).ready(function () {
 
       /////////EWWWWW COPIED IN FROM ABOVE. REFACTOR THIS. ^^^^^^^^
     });
-    _.each(_.keys(connections),(id) => {
+    _.each(_.keys(connections), (id) => {
       _.each(connections[id], (lr, targetId) => {
         let conn = instance.connect({
           source: id,
