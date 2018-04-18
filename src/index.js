@@ -85,26 +85,7 @@ $(document).ready(function () {
     state.setPosition(id, top, left);
     let newCard = card.createCard(id, top, left, priorPercent);
     $("#canvas").append(newCard);
-    //updateProposition(id, { prob: prior, prior: prior });
-
-    // Power the create-following statement capability
-    $(`#${id} .createFollowingHandle`).click(function () {
-      // Get the current statement ID
-      let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
-      let oldStatement = $(this).parents('.card').attr('id');
-      let newTop = oldStatement.top;
-      let newLeft = oldStatement.left + 100;
-      let newStatementId = state.newStatement(newTop, newLeft);
-      state.setPrior(newStatementId, priorPercent / 100);
-      // run function to create new statment from template
-      // with the same top property as the source statement
-      // and the left property as some spacing value added
-      // to the source statement
-      // end
-      card.createCard(newStatementId, newTop, newLeft, priorPercent);
-      $("#canvas").append(newCard);
-      return false;
-    });
+    $(`#${id} .text`).focus();
 
     // Power saving/editing the statement text
     $(`#${id} .text`).on('input', function (e) {
@@ -114,7 +95,6 @@ $(document).ready(function () {
     // Power the prior editing capability
     $(`#${id} .prior input`).change(function () {
       let statement = $(this).parents('.window').attr('id');
-
       state.setPrior(statement, (this.value / 100));
       return false;
     });
@@ -192,7 +172,7 @@ $(document).ready(function () {
 
       /////////EWWWWW COPIED IN FROM ABOVE. REFACTOR THIS. ^^^^^^^^
     });
-    _.each(_.keys(connections),(id) => {
+    _.each(_.keys(connections), (id) => {
       _.each(connections[id], (lr, targetId) => {
         let conn = instance.connect({
           source: id,
