@@ -1,12 +1,43 @@
 import utils from './utils.js';
-export default {
+import state from './state.js';
+import $ from 'jquery';
 
-  // New Proposition Card Creation
-  //
-  createCard: (id, top, left, priorPercent, loadedText, loadedProbability) => {
-    let text = loadedText ? loadedText : "";
-    let probability = loadedProbability ? loadedProbability : (priorPercent / 100);
-    let newCard = `
+export const createStatement = (id, top, left) => {
+  // Refactor this block into...state? maybe?
+  let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
+  state.setPrior(id, priorPercent / 100);
+  state.setPosition(id, top, left);
+  let newCard = createCard(id, top, left, priorPercent);
+  $("#canvas").append(newCard);
+  $(`#${id} .text`).focus();
+
+  // Power saving/editing the statement text
+  $(`#${id} .text`).on('input', function (e) {
+    state.setText(id, e.delegateTarget.innerHTML);
+  })
+
+  // Power the prior editing capability
+  $(`#${id} .prior input`).change(function () {
+    let statement = $(this).parents('.window').attr('id');
+    state.setPrior(statement, (this.value / 100));
+    return false;
+  });
+
+  // Power the delete item control
+  $(`#${id} .tools .delete`).click(function (id) {
+    let statementId = $(this).parents('.card').attr('isd');
+    if (state.exists(statementId)) {
+      instance.remove(statementId);
+      state.deleteStatement(statementId);
+      rePlumb(instance, statementId);
+    }
+  });
+}
+
+const createCard = (id, top, left, priorPercent, loadedText, loadedProbability) => {
+  let text = loadedText ? loadedText : "";
+  let probability = loadedProbability ? loadedProbability : (priorPercent / 100);
+  let newCard = `
       <div class="statement card" id="${id}" style="top:${top}px; left:${left}px">
         <p class="text" contenteditable="true">${text}</p>
         <label class="prior">
@@ -60,6 +91,5 @@ export default {
         </a>-->
       </div>
     `;
-    return newCard;
-  }
+  return newCard;
 }
