@@ -3,7 +3,6 @@ import state from './state.js';
 import $ from 'jquery';
 
 export const createStatement = (id, top, left) => {
-  // Refactor this block into...state? maybe?
   let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
   state.setPrior(id, priorPercent / 100);
   state.setPosition(id, top, left);
