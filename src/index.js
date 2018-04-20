@@ -1,9 +1,10 @@
 import { jsPlumb } from 'jsplumb';
 import $ from 'jquery';
 import utils from './utils';
-import card from './card'
+import { createStatement } from './card'
 import state from './state'
 import config from './config'
+import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from 'constants';
 require('../style/app.scss');
 
 state.setProbabilityUpdatedCallback((id, newProbability) => {
@@ -77,37 +78,8 @@ const stopDoubleclickPropagation = (id) => {
 $(document).ready(function () {
 
   $("#canvas").dblclick(function (e) {
-    let priorPercent = parseFloat(prompt("Best guess probability for the new proposition?", "50"));
-    let top = e.pageY;
-    let left = e.pageX;
-    let id = state.newStatement(top, left);
-    state.setPrior(id, priorPercent / 100);
-    state.setPosition(id, top, left);
-    let newCard = card.createCard(id, top, left, priorPercent);
-    $("#canvas").append(newCard);
-    $(`#${id} .text`).focus();
-
-    // Power saving/editing the statement text
-    $(`#${id} .text`).on('input', function (e) {
-      state.setText(id, e.delegateTarget.innerHTML);
-    })
-
-    // Power the prior editing capability
-    $(`#${id} .prior input`).change(function () {
-      state.setPrior(id, (this.value / 100));
-      return false;
-    });
-
-    // Power the delete item control
-    $(`#${id} .tools .delete`).click(function (id) {
-      let statementId = $(this).parents('.card').attr('id');
-      if (state.exists(statementId)) {
-        instance.remove(statementId);
-        state.deleteStatement(statementId);
-        rePlumb(instance, statementId);
-      }
-    });
-
+    let id = state.newStatement(e.pageY, e.pageX);
+    createStatement(id, e.pageY, e.pageX);
     // reapply stopPropagation
     stopDoubleclickPropagation(id);
     rePlumb(instance, id);
