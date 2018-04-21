@@ -48,6 +48,8 @@ export default {
     connector: ["Bezier", { curviness: defaultConnectionCurviness }],
     maxConnections: -1,
     dropOptions: exampleDropOptions
-  }
+  },
 
+  autoCreatedStatementsStartPosition: [100, 100],
+  autoCreatedStatementIterationSize: 20
 };
