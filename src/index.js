@@ -70,8 +70,8 @@ const stopDoubleclickPropagation = (id) => {
 $(document).ready(function () {
 
   $("#canvas").dblclick(function (e) {
-    let id = state.createStatement(e.pageY, e.pageX);
-    displayStatement(id, e.pageY, e.pageX, instance = instance);
+    let id = state.createStatement({ top: e.pageY, left: e.pageX });
+    displayStatement(id, instance = instance);
     stopDoubleclickPropagation(id);
     rePlumb(instance, id);
   });
