@@ -1,6 +1,5 @@
 import utils from './utils';
 import state, { statements } from './state';
-import { rePlumb } from './index';
 import $ from 'jquery';
 
 const createCardFromStatement = (id) => {
@@ -69,7 +68,7 @@ export const displayStatement = ({ instance, id }) => {
     if (state.exists(statementId)) {
       instance.remove(statementId);
       state.deleteStatement(statementId);
-      rePlumb(instance, statementId);
+      utils.rePlumb(instance, statementId);
     }
   });
 }
