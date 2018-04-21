@@ -32,10 +32,10 @@ const recalculateProbabilitiesFrom = (id) => {
 
 export default {
 
-  createStatement: (text, top, left, prior, contributions) => {
+  createStatement: ({ text, top, left, prior, contributions }) => {
     let id = 'uuid' + uuid();
     statements[id] = {
-      text: 'New Statement',
+      text: '',
       position: {
         top: top ? top : 200,
         left: left ? left : 200
