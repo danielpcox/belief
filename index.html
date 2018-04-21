@@ -13,17 +13,21 @@
       <div class="jtk-main">
         <div class="jtk-canvas canvas-wide drag-drop jtk-surface" id="canvas">
         </div>
-        <div class="page-tools">
-          <div class="tool">
+        <ul class="page-tools">
+          <li class="tool">
+            <button class="button" id="create-statement">Add Statement</button>
+          </li>
+
+          <li class="tool">
             <label class="button" for="file-input">
               Import
               <input type="file" id="file-input" style="display: none;" />
             </label>
-          </div>
-          <div class="tool">
+          </li>
+          <li class="tool">
             <button class="button" id="save">Export</button>
-          </div>
-        </div>
+          </li>
+        </ul>
         <ul class="notifications">
           <li>
             <p>Double-click to add a statement</p>

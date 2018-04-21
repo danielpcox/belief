@@ -13,20 +13,26 @@
 .card {
   --card-vertical-padding: var(--spacing-base);
   --card-horizontal-padding: calc(1.5 * var(--spacing-base));
+  --card-border-width: 2px;
 
   background-color: var(--color-card-background-hsla);
   box-shadow: 0 0 0 0 transparent, 0 0 3px -2px var(--color-content);
+  border: 2px solid transparent;
   border-radius: var(--border-radius-base);
-  padding: var(--card-vertical-padding) var(--card-horizontal-padding);
+  padding: calc(var(--card-vertical-padding) - var(--card-border-width)) calc(var(--card-horizontal-padding) - var(--card-border-width));
   width: calc(18 * var(--spacing-base));
   min-height: calc(15 * var(--spacing-base));
   transition: var(--transition-base);
-  transition-property: color, background-color, opacity, box-shadow, backdrop-filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, opacity, border, box-shadow, backdrop-filter, -webkit-backdrop-filter;
   z-index: var(--z-index-card-base);
   position: absolute;
   line-height: 1.4;
   display: flex;
   flex-direction: column;
+
+  &:focus-within {
+    border-color: var(--color-intent-interaction);
+  }
 
   &:hover {
     z-index: calc(var(--z-index-card-base) + 10);
@@ -69,6 +75,7 @@
     padding: 0 var(--card-horizontal-padding) var(--spacing-base);
     transition: all var(--transition-base-duration-and-timing);
     cursor: text;
+    position: relative;
 
     &:hover {
       color: var(--color-intent-interaction);
@@ -77,6 +84,22 @@
     &:focus {
       color: var(--color-intent-interaction);
       outline: none;
+    }
+
+    &:after {
+      content: 'Enter statement';
+      font-weight: normal;
+      pointer-events: none;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: var(--card-horizontal-padding)
+    }
+
+    &:empty {
+      &:after {
+        opacity: 0.3;
+      }
     }
   }
 
