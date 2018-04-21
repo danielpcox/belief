@@ -17,7 +17,12 @@ const recalculateProbabilitiesFrom = (id) => {
   });
   let combinedContributions = _.reduce(contributions, (a, b) => a * b, 1);
   let posteriorOdds = priorOdds * combinedContributions;
-  let posteriorProbability = posteriorOdds / (1 + posteriorOdds);
+  let posteriorProbability = 0.5;
+  if (posteriorOdds == Infinity) {
+    posteriorProbability = 1;
+  } else {
+    posteriorProbability = posteriorOdds / (1 + posteriorOdds);
+  }
   statements[id].probability = posteriorProbability;
 
   // call back UI
