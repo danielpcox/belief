@@ -39,12 +39,6 @@ const createCardFromStatement = (id) => {
             <span class="label">Delete</span>
           </button>
         </div>
-        <!--<a class="createFollowingHandle">
-          <p>Create following statement</p>
-        </a>-->
-        <!--<a class="createPrecedingHandle">
-          <p>Create preceding statement</p>
-        </a>-->
       </div>
     `;
   return newCard;
