@@ -28,11 +28,11 @@ $(document).ready(function () {
 
   utils.stopDoubleclickPropagation();
 
-  $('#create-statement').click(function (e) {
+  $('#create-statement').click(function () {
     let id = state.createStatement({ top: config.autoCreatedStatementsStartPosition[0], left: config.autoCreatedStatementsStartPosition[1] });
+    displayStatement({ instance, id });
     config.autoCreatedStatementsStartPosition[0] += config.autoCreatedStatementIterationSize;
     config.autoCreatedStatementsStartPosition[1] += config.autoCreatedStatementIterationSize;
-    displayStatement(id);
     utils.stopDoubleclickPropagation(id);
     utils.rePlumb(instance, id);
   });
