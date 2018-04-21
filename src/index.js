@@ -71,7 +71,7 @@ $(document).ready(function () {
 
   $("#canvas").dblclick(function (e) {
     let id = state.createStatement({ top: e.pageY, left: e.pageX });
-    displayStatement(id, instance = instance);
+    displayStatement(id);
     stopDoubleclickPropagation(id);
     rePlumb(instance, id);
   });
@@ -79,8 +79,10 @@ $(document).ready(function () {
   stopDoubleclickPropagation();
 
   $('#create-statement').click(function (e) {
-    let id = state.createStatement();
-    displayStatement(id, instance = instance);
+    let id = state.createStatement({ top: config.autoCreatedStatementsStartPosition[0], left: config.autoCreatedStatementsStartPosition[1] });
+    config.autoCreatedStatementsStartPosition[0] += config.autoCreatedStatementIterationSize;
+    config.autoCreatedStatementsStartPosition[1] += config.autoCreatedStatementIterationSize;
+    displayStatement(id);
     stopDoubleclickPropagation(id);
     rePlumb(instance, id);
   });
