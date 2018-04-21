@@ -68,7 +68,7 @@ export const displayStatement = ({ instance, id }) => {
     if (state.exists(statementId)) {
       instance.remove(statementId);
       state.deleteStatement(statementId);
-      rePlumb(instance, statementId);
+      utils.rePlumb(instance, statementId);
     }
   });
 }
