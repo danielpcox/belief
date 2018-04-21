@@ -13,7 +13,7 @@ state.setProbabilityUpdatedCallback((id, newProbability) => {
 
 // Extracted function for reapplying jsPlumb
 let dontProcessConnectionEvents = false;
-const rePlumb = (instance, id) => {
+export const rePlumb = (instance, id) => {
   instance.batch(function () {
 
     // event bindings 
@@ -55,7 +55,7 @@ const rePlumb = (instance, id) => {
 
 
 // Actually run jsPlumb
-let instance;
+export let instance;
 jsPlumb.ready(function () {
   instance = jsPlumb.getInstance(config.instanceOptions);
 });
@@ -71,7 +71,7 @@ $(document).ready(function () {
 
   $("#canvas").dblclick(function (e) {
     let id = state.createStatement({ top: e.pageY, left: e.pageX });
-    displayStatement(id);
+    displayStatement({ instance, id });
     stopDoubleclickPropagation(id);
     rePlumb(instance, id);
   });
