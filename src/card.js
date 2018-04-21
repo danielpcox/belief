@@ -1,5 +1,6 @@
 import utils from './utils';
 import state, { statements } from './state';
+import { rePlumb } from './index';
 import $ from 'jquery';
 
 const createCardFromStatement = (id) => {
@@ -45,7 +46,7 @@ const createCardFromStatement = (id) => {
 }
 
 
-export const displayStatement = (id, instance) => {
+export const displayStatement = ({ instance, id }) => {
 
   let newCard = createCardFromStatement(id);
   $("#canvas").append(newCard);
@@ -63,16 +64,12 @@ export const displayStatement = (id, instance) => {
   });
 
   // Power statement deletion
-  // 
-  // TODO: Card doesn't know what instance or
-  // rePlumb are, so it can't use them from here.
   $(`#${id} .tools .delete`).click(function (id) {
     let statementId = $(this).parents('.card').attr('id');
-    alert('Sorry, card deletion is broken.');
-    // if (state.exists(statementId)) {
-    //   instance.remove(statementId);
-    //   state.deleteStatement(statementId);
-    //   rePlumb(instance, statementId);
-    // }
+    if (state.exists(statementId)) {
+      instance.remove(statementId);
+      state.deleteStatement(statementId);
+      rePlumb(instance, statementId);
+    }
   });
 }
