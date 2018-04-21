@@ -6,7 +6,7 @@ export default {
 
   displayProbability: (prob, style) => {
     let readableProb = '';
-    let unit = '';
+    style = style ? style : 'probability';
 
     switch (style) {
       case 'odds':
@@ -21,7 +21,7 @@ export default {
         break;
     }
 
-    // create a display component classed with display method for styiling control
+    // create a display component classed with display method for styling control
     // Display the resulting readable probability
     // If there's a unit to display, display it too
     return (`
