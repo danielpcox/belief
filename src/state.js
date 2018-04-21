@@ -1,7 +1,7 @@
 import uuid from 'uuid/v4'
 import _ from 'lodash'
 
-let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statement", prior:0.5, contributions:['uuid1','uuid2'], probability:0.5} }
+export let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statement", prior:0.5, contributions:['uuid1','uuid2'], probability:0.5} }
 let connections = {}; // e.g. {'uuid1': {'uuid2': 3.0}}
 let probabilityUpdatedCallback = Function.prototype; // callback function to call with id of updated probability and new probability
 let onLoadCallback = Function.prototype;
@@ -17,7 +17,7 @@ const recalculateProbabilitiesFrom = (id) => {
   });
   let combinedContributions = _.reduce(contributions, (a, b) => a * b, 1);
   let posteriorOdds = priorOdds * combinedContributions;
-  let posteriorProbability = posteriorOdds / (1 + posteriorOdds)
+  let posteriorProbability = posteriorOdds / (1 + posteriorOdds);
   statements[id].probability = posteriorProbability;
 
   // call back UI
@@ -32,16 +32,16 @@ const recalculateProbabilitiesFrom = (id) => {
 
 export default {
 
-  newStatement: (top, left) => {
+  createStatement: (text, top, left, prior, contributions) => {
     let id = 'uuid' + uuid();
     statements[id] = {
+      text: 'New Statement',
       position: {
-        top: top,
-        left: left
+        top: top ? top : 200,
+        left: left ? left : 200
       },
-      text: "Statement",
-      prior: 0.5,
-      contributions: [],
+      prior: prior ? prior : 0.5,
+      contributions: contributions ? contributions : [],
       probability: 0.5 // Note that you don't set the probability directly. It is calculated from connections.
     };
     return id;
@@ -106,7 +106,7 @@ export default {
     };
     let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
     let downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", exportName + ".json");
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -122,10 +122,10 @@ export default {
       return;
     }
     let reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       let contents = e.target.result;
       let loaded = JSON.parse(contents);
-      console.log("Loaded save file: ",loaded)
+      console.log("Loaded save file: ", loaded)
       statements = loaded.statements;
       connections = loaded.connections;
       onLoadCallback(statements, connections);
