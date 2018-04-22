@@ -60,4 +60,7 @@ export default {
 
   // Direction
   ShowTutorial: true,
+
+  //
+  readableDecimals: 2
 };

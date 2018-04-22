@@ -2,7 +2,6 @@ import config from './config';
 import state from './state';
 import $ from 'jquery';
 
-const readableDecimals = 2;
 let dontProcessConnectionEvents = false;
 
 // 
@@ -22,10 +21,10 @@ export default {
       case 'odds':
         let numerator = '1';
         let denominator = (1 / probability) - 1;
-        readableProbability = numerator + ":" + Math.round(denominator, readableDecimals);
+        readableProbability = numerator + ":" + Math.round(denominator, config.readableDecimals);
         break;
       default:
-        let value = Math.round(probability * 100, readableDecimals).toString();
+        let value = Math.round(probability * 100, config.readableDecimals).toString();
         let unit = '%';
         readableProbability = value;
         break;
