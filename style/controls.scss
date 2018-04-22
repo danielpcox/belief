@@ -27,7 +27,12 @@ button {
 }
 
 // Form Labels
-label { }
+label {
+  &:hover,
+  &:focus-within {
+    color: var(--color-intent-interaction);
+  }
+}
 
 .control-slider { }
 
