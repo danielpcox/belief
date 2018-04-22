@@ -24,40 +24,26 @@ $(document).ready(function () {
     let id = '';
 
     id = state.createStatement({
-      text: 'Pizza',
+      text: 'Pizza is good to eat',
       top: 200,
       left: 200,
-      prior: 0.1
+      prior: 0.95
     });
     let tutorialCard1 = id;
     displayStatement({ instance, id });
 
     id = state.createStatement({
-      text: 'Cake',
+      text: 'I should eat Pizza',
       top: 200,
-      left: 400,
-      prior: 0.9
+      left: 500,
+      prior: 0.5
     });
     let tutorialCard2 = id;
     displayStatement({ instance, id });
 
-    id = state.createStatement({
-      text: 'Ice Cream',
-      top: 200,
-      left: 600,
-      prior: 0.6
-    });
-    displayStatement({ instance, id });
-    let tutorialCard3 = id;
-
-
-    // state.setConnection(tutorialCard1, tutorialCard2, 10);
-    // state.setConnection(tutorialCard2, tutorialCard3, 5);
-    // utils.rePlumb(instance, tutorialCard1);
-    // utils.rePlumb(instance, tutorialCard2);
-    // utils.rePlumb(instance, tutorialCard3);
-    // state.recalculateProbabilitiesFrom(tutorialCard1);
-
+    state.setConnection(tutorialCard1, tutorialCard2, 10.0);
+    utils.rePlumb(instance, tutorialCard1);
+    utils.rePlumb(instance, tutorialCard2);
   }
 
   $("#canvas").dblclick(function (e) {

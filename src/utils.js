@@ -47,7 +47,9 @@ export default {
   rePlumb: (instance, id) => {
     instance.batch(function () {
 
-      // Create event bindings 
+      // Create event bindings..
+
+      // On new connection...
       instance.bind("connection", function (info, originalEvent) {
         if (state.processConnectionEvents) {
           let conn = info.connection;
@@ -61,6 +63,7 @@ export default {
         }
       });
 
+      // on removing a connection...
       instance.bind("connectionDetached", function (info, originalEvent) {
         let conn = info.connection;
         state.deleteConnection(conn.source.id, conn.target.id);
