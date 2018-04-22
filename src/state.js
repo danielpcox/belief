@@ -40,13 +40,13 @@ export default {
   createStatement: ({ text, top, left, prior, contributions }) => {
     let id = 'uuid' + uuid();
     statements[id] = {
-      text: '',
+      text: text || '',
       position: {
-        top: top ? top : 200,
-        left: left ? left : 200
+        top: top || 200,
+        left: left || 200
       },
-      prior: prior ? prior : 0.5,
-      contributions: contributions ? contributions : [],
+      prior: prior || 0.5,
+      contributions: contributions || [],
       probability: 0.5 // Note that you don't set the probability directly. It is calculated from connections.
     };
     return id;
