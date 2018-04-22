@@ -51,5 +51,8 @@ export default {
   },
 
   autoCreatedStatementsStartPosition: [100, 100],
-  autoCreatedStatementIterationSize: 20
+  autoCreatedStatementIterationSize: 20,
+
+  cardOriginX: -8 * 9, // negative spacing-base * 9
+  cardOriginY: -8 * 4, // negative spacing-base * 4
 };

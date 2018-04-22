@@ -51,6 +51,15 @@ export const displayStatement = ({ instance, id }) => {
   $("#canvas").append(newCard);
   $(`#${id} .text`).focus();
 
+  // Power card draggability
+  instance.draggable(jsPlumb.getSelector(`#${id}`), {
+    handle: (`#${id} .drag-handle`),
+    containment: true,
+    stop: function (params) {
+      state.setPosition(id, params.pos[1], params.pos[0]);
+    }
+  });
+
   // Power statement text editing
   $(`#${id} .text`).on('input', function (e) {
     state.setText(id, e.delegateTarget.innerHTML);

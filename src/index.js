@@ -20,7 +20,11 @@ jsPlumb.ready(function () {
 $(document).ready(function () {
 
   $("#canvas").dblclick(function (e) {
-    let id = state.createStatement({ top: e.pageY, left: e.pageX });
+    let cardPosition = {
+      y: (e.pageY + config.cardOriginY),
+      x: (e.pageX + config.cardOriginX),
+    }
+    let id = state.createStatement({ top: cardPosition.y, left: cardPosition.x });
     displayStatement({ instance, id });
     utils.stopDoubleclickPropagation(id);
     utils.rePlumb(instance, id);
