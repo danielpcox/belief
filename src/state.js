@@ -79,6 +79,9 @@ export default {
     };
   },
 
+  recalculateProbabilitiesFrom: (id) => {
+    recalculateProbabilitiesFrom(id);
+  },
 
   deleteStatement: (id) => {
     // remove id from statements
