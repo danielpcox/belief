@@ -19,6 +19,43 @@ jsPlumb.ready(function () {
 
 $(document).ready(function () {
 
+  if (config.ShowTutorial == true) {
+
+    let id = '';
+
+    id = state.createStatement({
+      text: 'Pizza',
+      top: 200,
+      left: 200,
+      prior: 0.1
+    });
+    let tutorialCard1 = id;
+    displayStatement({ instance, id });
+
+    id = state.createStatement({
+      text: 'Cake',
+      top: 200,
+      left: 400,
+      prior: 0.9
+    });
+    let tutorialCard2 = id;
+    displayStatement({ instance, id });
+
+    id = state.createStatement({
+      text: 'Ice Cream',
+      top: 200,
+      left: 600,
+      prior: 0.6
+    });
+    displayStatement({ instance, id });
+    let tutorialCard3 = id;
+
+    utils.rePlumb(instance, tutorialCard1);
+    utils.rePlumb(instance, tutorialCard2);
+    utils.rePlumb(instance, tutorialCard3);
+
+  }
+
   $("#canvas").dblclick(function (e) {
     let cardPosition = {
       y: (e.pageY + config.cardOriginY),
