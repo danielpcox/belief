@@ -13,13 +13,6 @@ html {
   width: 100vw;
   font-family: var(--font-family-base);
   font-weight: var(--font-weight-base);
-  background-image: url("data:image/svg+xml;utf-8,\
-      <svg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'>\
-          <circle cx='8' cy='8' r='1.25' fill='rgba(255,255,255,0.5)' />\
-      </svg>");
-  background-repeat: repeat;
-  background-position: calc(var(--spacing-base) * 0.5) calc(var(--spacing-base) * 0.5);
-  background-size: auto auto;
   position: relative;
 }
 

@@ -5,10 +5,6 @@
   --card-control-base-opacity: 0.2;
 }
 
-@mixin style-for-dragging-drag-handle {
-}
-
-
 
 .card {
   --card-vertical-padding: var(--spacing-base);
@@ -125,9 +121,6 @@
   .prior {
     display: flex;
     align-items: center;
-    font-weight: bold;
-    font-size: var(--font-size-sm);
-    border-bottom: 1px solid rgba(0,0,0,.1);
 
     .label {
       flex: 1 1 auto;
@@ -137,17 +130,31 @@
       flex: 1 1 100%;
       width: 3em;
       border: 0;
+      margin: 0;
       appearance: none;
       -webkit-appearance: none;
       text-align: right;
       font-weight: inherit;
+      font-size: inherit;
+      position: relative;
 
       &:invalid {
         border: 1px solid var(--color-intent-danger);
       }
 
+      &::-webkit-inner-spin-button {
+        opacity: 0;
+        transition: all .5s ease;
+        position: absolute;
+        left: calc(100% + 1em);
+      }
+
       &:hover {
         color: var(--color-intent-interaction);
+
+        &::-webkit-inner-spin-button {
+          opacity: 1;
+        }
       }
 
       &:focus {
@@ -179,9 +186,6 @@
   }
 }
 
-// Contextual card tools
-// Drag handle, delete button, etc.
-// These disappear on mouseout, for the most part.
 .card {
 
   &:hover {
@@ -252,7 +256,6 @@
       transform-origin: center center;
 
       &:after {
-        // Create a more convenient mouse target for the button
         width: 1.3em;
         height: 1.3em;
         position: absolute;
