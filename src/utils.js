@@ -50,7 +50,7 @@ export default {
   rePlumb: (instance, id) => {
     instance.batch(function () {
 
-      // event bindings 
+      // Create event bindings 
       instance.bind("connection", function (info, originalEvent) {
         if (!dontProcessConnectionEvents) {
           let conn = info.connection;
@@ -69,20 +69,10 @@ export default {
         state.deleteConnection(conn.source.id, conn.target.id);
       });
 
-      let statementSelector = `#${id}`;
-      let el = jsPlumb.getSelector(statementSelector);
-
-      // make .card divs draggable
-      instance.draggable(el, {
-        handle: (statementSelector + " .drag-handle"),
-        stop: function (params) {
-          state.setPosition(id, params.pos[1], params.pos[0]);
-        }
-      });
-
-      // add input and output endpoints.
-      instance.addEndpoint(el, { anchor: "LeftMiddle" }, config.InputEndpoint);
-      instance.addEndpoint(el, { anchor: "RightMiddle" }, config.OutputEndpoint);
+      // Add input and output endpoints
+      let instanceElement = jsPlumb.getSelector(`#${id}`);
+      instance.addEndpoint(instanceElement, { anchor: "LeftMiddle" }, config.InputEndpoint);
+      instance.addEndpoint(instanceElement, { anchor: "RightMiddle" }, config.OutputEndpoint);
     });
   },
 
