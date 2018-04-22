@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4'
 import _ from 'lodash'
 
+export let processConnectionEvents = true;
 export let statements = {}; // e.g., { 'uuid1': {position: {top:0,left:0}, text:"Statement", prior:0.5, contributions:['uuid1','uuid2'], probability:0.5} }
 let connections = {}; // e.g. {'uuid1': {'uuid2': 3.0}}
 let probabilityUpdatedCallback = Function.prototype; // callback function to call with id of updated probability and new probability

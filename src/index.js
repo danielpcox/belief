@@ -50,9 +50,13 @@ $(document).ready(function () {
     displayStatement({ instance, id });
     let tutorialCard3 = id;
 
-    utils.rePlumb(instance, tutorialCard1);
-    utils.rePlumb(instance, tutorialCard2);
-    utils.rePlumb(instance, tutorialCard3);
+
+    // state.setConnection(tutorialCard1, tutorialCard2, 10);
+    // state.setConnection(tutorialCard2, tutorialCard3, 5);
+    // utils.rePlumb(instance, tutorialCard1);
+    // utils.rePlumb(instance, tutorialCard2);
+    // utils.rePlumb(instance, tutorialCard3);
+    // state.recalculateProbabilitiesFrom(tutorialCard1);
 
   }
 
@@ -81,7 +85,7 @@ $(document).ready(function () {
   $('#save').click(state.save);
 
   state.onLoad((statements, connections) => {
-    dontProcessConnectionEvents = true;
+    state.processConnectionEvents = false;
     _.each(_.keys(statements), (id) => {
       displayStatement(id, statements[id].position.top, statements[id].position.left, statements[id].prior * 100, statements[id].text, statements[id].probability);
       utils.stopDoubleclickPropagation(id);
@@ -98,7 +102,7 @@ $(document).ready(function () {
         conn.addOverlay(["Label", { label: lr.toString(), id: "label" }]);
       });
     });
-    dontProcessConnectionEvents = false;
+    state.processConnectionEvents = true;
 
   });
 });

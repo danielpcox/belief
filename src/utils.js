@@ -2,8 +2,6 @@ import config from './config';
 import state from './state';
 import $ from 'jquery';
 
-let dontProcessConnectionEvents = false;
-
 // 
 const stopDoubleclickPropagation = (id) => {
   $(id ? `#canvas #${id}` : "#canvas *").dblclick(function (e) {
@@ -51,7 +49,7 @@ export default {
 
       // Create event bindings 
       instance.bind("connection", function (info, originalEvent) {
-        if (!dontProcessConnectionEvents) {
+        if (state.processConnectionEvents) {
           let conn = info.connection;
           if (!conn.getOverlay("label")) {
             let likelihoodRatio = parseFloat(prompt("How many times more likely is the target if the source turns out to be true?", "1"));
