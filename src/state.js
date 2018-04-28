@@ -97,9 +97,7 @@ export default {
   deleteConnection: (sourceId, targetId) => {
     // remove pair from connections
     delete connections[sourceId][targetId];
-    console.log("target's contributions before", statements[targetId].contributions);
     statements[targetId].contributions = statements[targetId].contributions.filter(c => c !== sourceId);
-    console.log("target's contributions after", statements[targetId].contributions);
     // propagate forward
     recalculateProbabilitiesFrom(targetId);
   },
@@ -139,8 +137,6 @@ export default {
       console.log("Loaded save file: ", loaded)
       statements = loaded.statements;
       connections = loaded.connections;
-      console.log("statements", statements);
-      console.log("connections", connections);
       onLoadCallback(statements, connections);
     };
     reader.readAsText(file);
