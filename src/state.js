@@ -53,6 +53,7 @@ export default {
   },
 
   exists: (id) => statements[id],
+  getStatement: (id) => statements[id],
 
   setText: (id, text) => {
     statements[id].text = text;
@@ -83,24 +84,22 @@ export default {
   },
 
   deleteStatement: (id) => {
-    // remove id from statements
     let targetIds = _.keys(connections[id]);
     delete connections[id];
     // propagate forward
     _.each(targetIds, (targetId) => {
-      let s = new Set(statements[targetId].contributions);
-      let sWithoutId = s.delete(id);
-      statements[targetId].contributions = Array.from(sWithoutId);
+      statements[targetId].contributions = statements[targetId].contributions.filter(c => c !== id);
       recalculateProbabilitiesFrom(targetId);
     });
+    delete statements[id];
   },
 
   deleteConnection: (sourceId, targetId) => {
     // remove pair from connections
     delete connections[sourceId][targetId];
-    let s = new Set(statements[targetId].contributions);
-    let sWithoutId = s.delete(sourceId);
-    statements[targetId].contributions = Array.from(sWithoutId);
+    console.log("target's contributions before", statements[targetId].contributions);
+    statements[targetId].contributions = statements[targetId].contributions.filter(c => c !== sourceId);
+    console.log("target's contributions after", statements[targetId].contributions);
     // propagate forward
     recalculateProbabilitiesFrom(targetId);
   },

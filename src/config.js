@@ -59,7 +59,7 @@ export default {
   cardOriginY: -8 * 4, // negative spacing-base * 4
 
   // Direction
-  ShowTutorial: true,
+  ShowTutorial: false,
 
   //
   readableDecimals: 2

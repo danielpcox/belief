@@ -1,15 +1,15 @@
 import utils from './utils';
-import state, { statements } from './state';
+import state from './state';
 import $ from 'jquery';
 
 const createCardFromStatement = (id) => {
-  let statement = statements[id];
+  let statement = state.getStatement(id);
 
   let top = statement.position.top ? statement.position.top : 200;
   let left = statement.position.left ? statement.position.left : 200;
   let text = statement.text ? statement.text : '';
   let prior = statement.prior ? statement.prior : 0.5;
-  let probability = prior;
+  let probability = statement.probability ? statement.probability : prior;
 
   let newCard = `
       <div class="statement card" id="${id}" style="top:${top}px; left:${left}px">

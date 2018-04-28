@@ -13,6 +13,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "array.from": "^1.0.3",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.11",
     "jest": "^22.4.3",
     "jquery": "^3.3.1",
@@ -25,5 +29,7 @@
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.13"
   },
-  "dependencies": {}
+  "dependencies": {
+    "npm": "^6.0.0"
+  }
 }

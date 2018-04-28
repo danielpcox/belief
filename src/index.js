@@ -73,7 +73,7 @@ $(document).ready(function () {
   state.onLoad((statements, connections) => {
     state.processConnectionEvents = false;
     _.each(_.keys(statements), (id) => {
-      displayStatement(id, statements[id].position.top, statements[id].position.left, statements[id].prior * 100, statements[id].text, statements[id].probability);
+      displayStatement({instance, id});
       utils.stopDoubleclickPropagation(id);
       utils.rePlumb(instance, id);
     });
