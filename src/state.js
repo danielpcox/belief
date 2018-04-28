@@ -88,7 +88,9 @@ export default {
     delete connections[id];
     // propagate forward
     _.each(targetIds, (targetId) => {
-      statements[targetId].contributions.delete(id);
+      let s = new Set(statements[targetId].contributions);
+      let sWithoutId = s.delete(id);
+      statements[targetId].contributions = Array.from(sWithoutId);
       recalculateProbabilitiesFrom(targetId);
     });
   },
@@ -96,7 +98,9 @@ export default {
   deleteConnection: (sourceId, targetId) => {
     // remove pair from connections
     delete connections[sourceId][targetId];
-    statements[targetId].contributions.delete(sourceId);
+    let s = new Set(statements[targetId].contributions);
+    let sWithoutId = s.delete(sourceId);
+    statements[targetId].contributions = Array.from(sWithoutId);
     // propagate forward
     recalculateProbabilitiesFrom(targetId);
   },
@@ -136,6 +140,8 @@ export default {
       console.log("Loaded save file: ", loaded)
       statements = loaded.statements;
       connections = loaded.connections;
+      console.log("statements", statements);
+      console.log("connections", connections);
       onLoadCallback(statements, connections);
     };
     reader.readAsText(file);
