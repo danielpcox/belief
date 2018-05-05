@@ -1,17 +1,17 @@
-
 // jsPlumb Setup
 //
-const colorRed = "rgb(255,59,48)";
-const colorBlue = "rgb(0,122,255)";
-const colorGreen = "rgb(76,217,100)";
+const colorRed = 'rgb(255,59,48)';
+const colorBlue = 'rgb(0,122,255)';
+const colorGreen = 'rgb(76,217,100)';
 const defaultConnectionCurviness = 50;
 const InputColor = colorRed;
 const OutputEndpointColor = colorGreen;
 const exampleDropOptions = {
-  tolerance: "touch",
-  hoverClass: "dropHover",
-  activeClass: "dragActive"
+  tolerance: 'touch',
+  hoverClass: 'dropHover',
+  activeClass: 'dragActive'
 };
+export const DebugConsole = true;
 
 export default {
   instanceOptions: {
@@ -20,11 +20,10 @@ export default {
     EndpointHoverStyle: { fill: colorBlue },
     HoverPaintStyle: { stroke: colorBlue },
     EndpointStyle: { width: 16, height: 16, stroke: colorGreen },
-    Endpoint: "Dot",
-    Anchors: ["TopCenter", "TopCenter"],
-    Container: "canvas"
+    Endpoint: 'Dot',
+    Anchors: ['TopCenter', 'TopCenter'],
+    Container: 'canvas'
   },
-
 
   InputEndpoint: {
     endpoint: ["Dot", { radius: 8 }],
@@ -59,7 +58,7 @@ export default {
   cardOriginY: -8 * 4, // negative spacing-base * 4
 
   // Direction
-  ShowTutorial: true,
+  ShowTutorial: false,
 
   //
   readableDecimals: 2
